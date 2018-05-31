@@ -1,0 +1,14 @@
+<form method="post" action="/movies/search">
+    <label><strong>Movie Name</strong></label><br><br>
+    <input type="text" name="title"><br>
+    <br>
+    <input type="submit" value="Search">
+</form>
+
+<h1>Movies</h1>
+<ul>
+<% movies.forEach(function(movie) { %>
+    <li><%= movie.title, (movie.year) %>
+    </li>
+<% }) %>
+</ul>
