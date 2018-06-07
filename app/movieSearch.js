@@ -9,13 +9,11 @@ var _ = require('lodash');
 
 var app = express();
 
-
 const searchRouter = express.Router();
 
 searchRouter.use(bodyParser.json()); 
 
 searchRouter.route('/')
-
 
 
 //view Engine

@@ -1,4 +1,4 @@
-<!-- ./views/main.ejs -->
+<!-- ./views/person.ejs -->
 <html>
     <head>
         <title>Movie</title>
@@ -61,31 +61,50 @@
 <h1 id="h1">Movies <a href="/profile" class="btn btn-danger"><span class="fa fa-gear"></span><object align="right" style="font-size:20px">profile</object></a></h1>
 
 <form method="post" action="/movies/search">
+    <label>Search Movie</label>
+    <input type="text" id="txtMovie" name="searchMovie"><br>    
+    <input type="submit" value="Submit">
+</form>
 
-<label>Search Movie</label><br>
-<input type="text" id="txtMovie" name="searchMovie"><br>
-<input type="submit" value="Submit">
+<form method="post" action="/movies/search/description">
+    <label>Description</label>
+    <input type="text" id="txtDescription" name="descriptionMovie"><br>
+    <input type="submit" value="Submit">
+</form>
 
+<form method="post" action="/movies/search/description/person">
+    <label>Person Description</label>
+    <input type="text" id="txtDescriptionPerson" name="searchPerson"><br>
+    <input type="submit" value="Submit">
 </form>
 
 <table id="table1" style="border-style:double;">
-    <tr>
-        <th>ID</th>
-        <th>Movie</td>
-        <th>Tagline</td>
-    </tr>
-<% movies.forEach(function(movie){ %>
-    <tr>
-        <td><%= movie.id %> </td>
-        <td><%= movie.title %></td>
-        <td><%= movie.tagline %> </td>
     
+
+    <tr>
+            <td colspan="5" style="text-align: center"> <%= personNN %> </td>
     </tr>
-    <% }) %>
+    <tr>
+            <th>Title</th>
+            <th>TagLine</th>
+            <th>Released</th>
+            
+        </tr>   
+       
+        <tr><% personDescription.forEach(function(desPerson){ %>
+            
+            <td> <%= desPerson.title %> </td>
+            <td> <%= desPerson.tagline %> </td>
+            <td> <%= desPerson.released %> </td>
+
+            
+        </tr>
+        <% }) %>
+
 
 </table>
+
 
 </body>
 <!-- </div> -->
 </html>
-

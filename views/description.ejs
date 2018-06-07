@@ -57,7 +57,7 @@
 
 </style>
 <body>
-<div class="jumbotron text-center">
+<!-- <div class="jumbotron text-center"> -->
 <h1 id="h1">Movies <a href="/profile" class="btn btn-danger"><span class="fa fa-gear"></span><object align="right" style="font-size:20px">profile</object></a></h1>
 
 <form method="post" action="/movies/search">
@@ -72,28 +72,39 @@
     <input type="submit" value="Submit">
 </form>
 
+<form method="post" action="/movies/search/description/person">
+    <label>Person Description</label>
+    <input type="text" id="txtDescriptionPerson" name="searchPerson"><br>
+    <input type="submit" value="Submit">
+</form>
+
 <table id="table1" style="border-style:double;">
-    <tr>
-        
-        <th>name</td>
-        <th>Born</th>
-    </tr>
+    
 
     <tr>
-        <td> <%= movieTT.title %> </td>
+            <td colspan="5" style="text-align: center"> <%= movieTT %> </td>
     </tr>
-    
-    <% movieDescription.forEach(function(description){ %>
-        <tr>
+    <tr>
+            <th>Name</th>
+            <th>Job</th>
+            <th>Role</th>
+            <th>Born</th>
+            
+        </tr>   
+       
+        <tr><% movieDescription.forEach(function(description){ %>
+            
             <td> <%= description.name %> </td>
-            <td> <%= description.born %> </td>
+            <td> <%= description.job %> </td>
+            <td>  <%= description.role %> </td>
+            <td>  <%= description.born %> </td>
         </tr>
-    <% }) %>
-   
+        <% }) %>
+
 
 </table>
 
 
 </body>
-</div>
+<!-- </div> -->
 </html>
