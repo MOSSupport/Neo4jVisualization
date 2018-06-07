@@ -79,13 +79,17 @@
         <th>Born</th>
     </tr>
 
+    <tr>
+        <td> <%= movieTT.title %> </td>
+    </tr>
+    
     <% movieDescription.forEach(function(description){ %>
         <tr>
             <td> <%= description.name %> </td>
             <td> <%= description.born %> </td>
         </tr>
-        <% }) %>
-
+    <% }) %>
+   
 
 </table>
 

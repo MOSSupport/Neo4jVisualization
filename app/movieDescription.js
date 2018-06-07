@@ -34,30 +34,28 @@ descriptionRouter.post('/movies/search/description', (req, res) =>{
   
     session
     
-    .run("MATCH (m:Movie) WHERE m.title =~ {title}\
+    .run("MATCH (m:Movie) WHERE m.title = {title}\
     OPTIONAL MATCH (x:Person)- [:ACTED_IN] -> (m) return x,m",
-   {title: '(?i).*' + paramName2 + '.*'})
+   {title: paramName2})
    
     .then(result => {  
-  
      var movieArr2 = [];
-     
+     var movieT = result.records[1];
+     var singleT = movieT.get(1);
+
      result.records.forEach(function(record){
+
         movieArr2.push({
-  
-        id:record._fields[0].identity.low,        
-        name: record._fields[0].properties.name,
-        born: record._fields[0].properties.born,
-        id: record._fields[1].identity.low,
-        released: record._fields[1].properties.released,
-        tagline: record._fields[1].properties.tagline,
-        title: record._fields[1].properties.title
-        
+            id:record._fields[0].identity.low,        
+            name: record._fields[0].properties.name,
+            born: record._fields[0].properties.born,
         });
     });     
         res.render('description', {
-          movieDescription: movieArr2
+          movieDescription: movieArr2,
+          movieTT: singleT.properties
         });   
+        console.log (singleT);
     })
   .catch(function(err){
       console.log(err)
