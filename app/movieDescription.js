@@ -48,27 +48,21 @@ descriptionRouter.post('/movies/search/description', (req, res) =>{
         var movieArr2 = [];
         
          result.records.forEach(function(record){
-          
             movieArr2.push({
-               
                 name: record._fields[1],
                 job: record._fields[2],
                 role: record._fields[3],
                 born: record._fields[4]
-              
             });
         });     
         res.render('description', {
             movieDescription: movieArr2,
             movieTT: singleT
         }); 
-        console.log(movieArr2)
-        console.log(singleT)
     })
   .catch(function(err){
       console.log(err)
       });
   }) 
   
-
 module.exports = descriptionRouter;

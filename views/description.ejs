@@ -75,7 +75,7 @@
 <form method="post" action="/movies/search/description/person">
     <label>Person Description</label>
     <input type="text" id="txtDescriptionPerson" name="searchPerson"><br>
-    <input type="submit" value="Submit">
+    <input type="submit" id="submitbtn"value="Submit">
 </form>
 
 <table id="table1" style="border-style:double;">
@@ -92,9 +92,10 @@
             
         </tr>   
        
-        <tr><% movieDescription.forEach(function(description){ %>
+        <tr>
+            <% movieDescription.forEach(function(description){ %>
             
-            <td> <%= description.name %> </td>
+            <td onclick = "myFunction('<%= description.name %>')"> <%= description.name %> </td>
             <td> <%= description.job %> </td>
             <td>  <%= description.role %> </td>
             <td>  <%= description.born %> </td>
@@ -103,7 +104,12 @@
 
 
 </table>
-
+<script>
+        function myFunction(x) {
+            document.getElementById("txtDescriptionPerson").value = x;
+            document.getElementById("submitbtn").click();
+        }
+</script>
 
 </body>
 <!-- </div> -->

@@ -63,7 +63,7 @@
 <form method="post" action="/movies/search">
     <label>Search Movie</label>
     <input type="text" id="txtMovie" name="searchMovie"><br>    
-    <input type="submit" value="Submit">
+    <input type="submit" id="submitbtn" value="Submit">
 </form>
 
 <form method="post" action="/movies/search/description">
@@ -91,9 +91,10 @@
             
         </tr>   
        
-        <tr><% personDescription.forEach(function(desPerson){ %>
+        <tr>
+            <% personDescription.forEach(function(desPerson){ %>
             
-            <td> <%= desPerson.title %> </td>
+            <td onclick = "myFunction('<%= desPerson.title %>')"> <%= desPerson.title %> </td>
             <td> <%= desPerson.tagline %> </td>
             <td> <%= desPerson.released %> </td>
 
@@ -103,7 +104,12 @@
 
 
 </table>
-
+<script>
+        function myFunction(x) {
+            document.getElementById("txtMovie").value = x;
+            document.getElementById("submitbtn").click();
+        }
+</script>
 
 </body>
 <!-- </div> -->
