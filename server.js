@@ -1,24 +1,19 @@
 // ./server.js
 //Required modules
-const express = require('express'),
-      serverApp = express(),
-      mongoose = require('mongoose'),
-      passport = require('passport'),
-      flash = require('connect-flash'),
-      morgan = require('morgan'),
-      cookieParser = require('cookie-parser'),
-      bodyParser = require('body-parser'),
-      session = require('express-session'),
-      http = require('http'),
-      neo4j = require('neo4j-driver').v1,
-      path = require('path'),
-      _ = require('lodash'),
-
-      DBconfig = require('./config/database.js'),
-      port = 3000,
-      hostname = 'localhost';
-var router = express.Router();
-
+const express = require('express');
+const serverApp = express();
+const mongoose = require('mongoose');
+const passport = require('passport');
+const flash = require('connect-flash');
+const morgan = require('morgan');
+const cookieParser = require('cookie-parser');
+const bodyParser = require('body-parser');
+const session = require('express-session');
+const http = require('http');
+const uuid = require('uuid-v4');
+const DBconfig = require('./config/database.js');
+const port = 3000;
+const hostname = 'localhost';
 const searchRouter = require('./app/movieSearch');
 const descriptionRouter = require('./app/movieDescription');
 const personRouter = require('./app/personSearch');
@@ -37,7 +32,11 @@ serverApp.use(bodyParser.urlencoded({extended : false}));
 serverApp.set('view engine','ejs');
 
 //Required elements for passport module
-serverApp.use(session({secret: 'ilovescotchscotchy'}));
+serverApp.use(session({
+    genid: function(req) {return uuid();},
+    secret: 'ilovescotchscotchy'
+}));
+
 serverApp.use(passport.initialize());
 serverApp.use(passport.session());
 serverApp.use(flash());
