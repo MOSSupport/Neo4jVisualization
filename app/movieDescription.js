@@ -4,19 +4,13 @@ var morgan = require('morgan');
 var express = require('express');
 var path = require('path');
 var bodyParser = require('body-parser');
-var router = express.Router();
 var _ = require('lodash');
-
-
-const hostname = 'localhost';
 var app = express();
 
 //construct Decription Router 
 const descriptionRouter = express.Router();
 descriptionRouter.use(bodyParser.json()); 
 descriptionRouter.route('/')
-
-
 
 //view Engine
 app.set('views', path.join(__dirname, 'views'));
@@ -33,36 +27,34 @@ var session = driver.session();
 
 descriptionRouter.post('/movies/search/description', (req, res) =>{
     
-    var paramName2 = req.body.descriptionMovie;
+  var paramName2 = req.body.descriptionMovie;
    
+  session
 
-    session
+  .run("MATCH (n:Movie{title:{title}}) <- [r]- (p:Person)\
+  return n.title, p.name, head(split(lower(type(r)), '_')), r.roles, p.born",{title: paramName2})
 
-    .run("MATCH (n:Movie{title:{title}}) <- [r]- (p:Person)\
-    return n.title, p.name, head(split(lower(type(r)), '_')), r.roles, p.born",{title: paramName2})
-
-    .then(function(result){
-
-        var movieT = result.records[0];
-        var singleT = movieT.get(0)
-        var movieArr2 = [];
+  .then(function(result){
+    var movieT = result.records[0];
+    var singleT = movieT.get(0)
+    var movieArr2 = [];
         
-         result.records.forEach(function(record){
-            movieArr2.push({
-                name: record._fields[1],
-                job: record._fields[2],
-                role: record._fields[3],
-                born: record._fields[4]
-            });
-        });     
-        res.render('description', {
-            movieDescription: movieArr2,
-            movieTT: singleT
-        }); 
-    })
+    result.records.forEach(function(record){
+			movieArr2.push({
+				name: record._fields[1],
+				job: record._fields[2],
+				role: record._fields[3],
+				born: record._fields[4]
+			});
+    });     
+    res.render('description', {
+      movieDescription: movieArr2,
+      movieTT: singleT
+    }); 
+  })
   .catch(function(err){
-      console.log(err)
-      });
-  }) 
+    console.log(err)
+  });
+}) 
   
 module.exports = descriptionRouter;

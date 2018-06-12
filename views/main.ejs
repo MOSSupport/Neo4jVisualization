@@ -71,24 +71,28 @@
 <table id="table1" style="border-style:double;">
     <tr>
         <th>ID</th>
-        <th>Movie</td>
-        <th>Tagline</td>
+        <th>Movie</th>
+        <th>Tagline</th>
+        <th>Watch</th>
     </tr>
 <% movies.forEach(function(movie){ %>
-    <tr onclick = "myFunction('<%= movie.title %>')">
+    <tr>
         <td><%= movie.id %> </td>
-        <td><%= movie.title %></td>
+        <td onclick = "clickFunction('<%= movie.title %>')"><%= movie.title %></td>
         <td><%= movie.tagline %> </td>
+        <td><button value="Watch" onclick="relation('<%= movie.title %>')">Watch</button></td>
     </tr>
 <% }) %>
-
 </table>
+
 <script>
-    function myFunction(x) {
+    function clickFunction(x) {
         document.getElementById("txtMovie").value = x;
         document.getElementById("submitbtn").click();
     }
 </script>
+<script src ="../app/makeRelation.js"></script>
+<script> relation(movie); </script>
 </body>
 <!-- </div> -->
 </html>

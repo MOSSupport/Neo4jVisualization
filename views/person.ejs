@@ -88,16 +88,17 @@
             <th>Title</th>
             <th>TagLine</th>
             <th>Released</th>
+            <th>Watch</th>
             
         </tr>   
        
         <tr>
             <% personDescription.forEach(function(desPerson){ %>
             
-            <td onclick = "myFunction('<%= desPerson.title %>')"> <%= desPerson.title %> </td>
+            <td onclick = "clickFunction('<%= desPerson.title %>')"> <%= desPerson.title %> </td>
             <td> <%= desPerson.tagline %> </td>
             <td> <%= desPerson.released %> </td>
-
+            <td><button value="Watch" id="btnWatch" name="btnWatch">Watch</td>
             
         </tr>
         <% }) %>
@@ -105,10 +106,10 @@
 
 </table>
 <script>
-        function myFunction(x) {
-            document.getElementById("txtMovie").value = x;
-            document.getElementById("submitbtn").click();
-        }
+    function clickFunction(x) {
+        document.getElementById("txtMovie").value = x;
+        document.getElementById("submitbtn").click();
+    }
 </script>
 
 </body>

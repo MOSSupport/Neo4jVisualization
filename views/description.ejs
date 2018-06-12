@@ -90,12 +90,13 @@
             <th>Role</th>
             <th>Born</th>
             
+            
         </tr>   
        
         <tr>
             <% movieDescription.forEach(function(description){ %>
             
-            <td onclick = "myFunction('<%= description.name %>')"> <%= description.name %> </td>
+            <td onclick = "clickFunction('<%= description.name %>')"> <%= description.name %> </td>
             <td> <%= description.job %> </td>
             <td>  <%= description.role %> </td>
             <td>  <%= description.born %> </td>
@@ -105,10 +106,10 @@
 
 </table>
 <script>
-        function myFunction(x) {
-            document.getElementById("txtDescriptionPerson").value = x;
-            document.getElementById("submitbtn").click();
-        }
+    function clickFunction(x) {
+        document.getElementById("txtDescriptionPerson").value = x;
+        document.getElementById("submitbtn").click();
+    }
 </script>
 
 </body>

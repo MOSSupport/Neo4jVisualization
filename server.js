@@ -17,6 +17,7 @@ const hostname = 'localhost';
 const searchRouter = require('./app/movieSearch');
 const descriptionRouter = require('./app/movieDescription');
 const personRouter = require('./app/personSearch');
+const relationRouter = require('./views/makeRelation');
 
 //DB configuration
 mongoose.connect(DBconfig.url); //connect to the mongoDB
@@ -33,8 +34,8 @@ serverApp.set('view engine','ejs');
 
 //Required elements for passport module
 serverApp.use(session({
-    genid: function(req) {return uuid();},
-    secret: 'ilovescotchscotchy'
+  genid: function(req) {return uuid();},
+  secret: 'ilovescotchscotchy'
 }));
 
 serverApp.use(passport.initialize());
@@ -45,11 +46,12 @@ serverApp.use(flash());
 require('./app/routes.js')(serverApp, passport);
 serverApp.use(searchRouter);
 serverApp.use(descriptionRouter);
-serverApp.use(personRouter)
+serverApp.use(personRouter);
+serverApp.use(relationRouter);
 
 const server = http.createServer(serverApp);
 server.listen(port, hostname, () => {
-    console.log(`Server running at http://${hostname}:${port}`);
+  console.log(`Server running at http://${hostname}:${port}`);
 });
 //serverApp.use('/', router);
 module.exports = serverApp;
