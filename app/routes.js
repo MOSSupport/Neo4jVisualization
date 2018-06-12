@@ -170,6 +170,11 @@ module.exports = function(serverApp, passport) {
     });
   });
 
+  //Show Visualization graph of relationship between User and Movie nodes
+  serverApp.get('/visualization', isLoggedIn, function(req, res) {
+    res.render('graphVis.ejs', {});
+  });
+
   //Show user profile page with login information
   serverApp.get('/profile', isLoggedIn, function(req, res) {
     res.render('profile.ejs', {
