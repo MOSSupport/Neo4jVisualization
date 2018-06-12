@@ -14,10 +14,6 @@ const uuid = require('uuid-v4');
 const DBconfig = require('./config/database.js');
 const port = 3000;
 const hostname = 'localhost';
-const searchRouter = require('./app/movieSearch');
-const descriptionRouter = require('./app/movieDescription');
-const personRouter = require('./app/personSearch');
-const relationRouter = require('./views/makeRelation');
 
 //DB configuration
 mongoose.connect(DBconfig.url); //connect to the mongoDB
@@ -44,10 +40,7 @@ serverApp.use(flash());
 
 //Routes
 require('./app/routes.js')(serverApp, passport);
-serverApp.use(searchRouter);
-serverApp.use(descriptionRouter);
-serverApp.use(personRouter);
-serverApp.use(relationRouter);
+
 
 const server = http.createServer(serverApp);
 server.listen(port, hostname, () => {
