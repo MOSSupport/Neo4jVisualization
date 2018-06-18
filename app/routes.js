@@ -2,7 +2,7 @@
 module.exports = function(serverApp, passport) {
   //Neo4j Configuration
   var neo4j = require('neo4j-driver').v1;
-  var driver = neo4j.driver('bolt://127.0.0.1:7687', neo4j.auth.basic('neo4j', '12345'));
+  var driver = neo4j.driver('bolt://192.168.1.211:17687', neo4j.auth.basic('neo4j', 'admin'));
   var neo_session = driver.session();
   var usrID = require('../config/passport');
 
