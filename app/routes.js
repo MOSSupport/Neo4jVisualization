@@ -181,19 +181,20 @@ module.exports = function(serverApp, passport) {
 
   //Show user profile page with login information
   serverApp.get('/profile', isLoggedIn, function(req, res) {
-    //Create User node in Neo4j Database
-    const insertingUser = neo_session.run(
-      "MERGE (u:User {id : {id}})",{id: usrID.NuserID}
-    );
-    insertingUser.then(function() {
-      console.log("Successfully created the User node (No duplicated node will be created).");
-      neo_session.close();
-    })
-    .catch(function(err){
-      console.log(err)
-      neo_session.close();
-    });
-    
+    if (usrID.NuserID) {
+      //Create User node in Neo4j Database
+      const insertingUser = neo_session.run(
+        "MERGE (u:User {id : {id}})",{id: usrID.NuserID}
+      );
+      insertingUser.then(function() {
+        console.log("Successfully created the User node (No duplicated node will be created).");
+        neo_session.close();
+      })
+      .catch(function(err){
+        console.log(err)
+        neo_session.close();
+      });
+    }
     res.render('profile.ejs', {
       user : req.user // get the user out of session and pass to template
     });
