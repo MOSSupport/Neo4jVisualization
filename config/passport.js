@@ -4,11 +4,6 @@
 var localSt = require('passport-local').Strategy;
 var googleSt = require('passport-google-oauth').OAuth2Strategy;
 
-//connect Neo4j with node.js
-var neo4j = require('neo4j-driver').v1;
-var driver = neo4j.driver('bolt://192.168.1.211:17687', neo4j.auth.basic('neo4j', 'admin'));
-var session = driver.session();
-
 // Load user model
 var Users = require('../app/models/users');
 
@@ -59,18 +54,7 @@ module.exports = function(passport) {
             newUser.save (function(err) {
               if(err) { throw err;}
                             
-              //Create User node in Neo4j Database
-              const insertingUser = session.run(
-                "MERGE (u:User {id : {id}})",{id: newUser.id}
-              );
-              insertingUser.then(function() {
-                console.log("Successfully created the User node.");
-                session.close();
-              })
-              .catch(function(err){
-                console.log(err)
-                session.close();
-              });
+              module.exports.NuserID = newUser.id;
 
               return done(null, newUser);
             });
@@ -151,18 +135,7 @@ module.exports = function(passport) {
 						newUser.save(function(err) {
 							if (err) { throw err; }
 
-							//Create User node in Neo4j Database
-							const insertingUser = session.run(
-								"MERGE (u:User {id : {id}})",{id: newUser.id}
-							);
-							insertingUser.then(function() {
-								console.log("Successfully created the User node with a property.");
-								session.close();
-							})
-							.catch(function(err){
-								console.log(err)
-								session.close();
-							});
+							module.exports.NuserID = newUser.id;
 
 							return done(null, newUser);
 						});
