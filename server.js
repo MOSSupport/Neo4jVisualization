@@ -13,7 +13,7 @@ const http = require('http');
 const uuid = require('uuid-v4');
 const DBconfig = require('./config/database.js');
 const port = 3000;
-const hostname = 'localhost';
+const hostname = '0.0.0.0';
 
 //DB configuration
 mongoose.connect(DBconfig.url); //connect to the mongoDB
