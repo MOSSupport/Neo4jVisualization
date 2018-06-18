@@ -6,7 +6,7 @@ var googleSt = require('passport-google-oauth').OAuth2Strategy;
 
 //connect Neo4j with node.js
 var neo4j = require('neo4j-driver').v1;
-var driver = neo4j.driver('bolt://127.0.0.1:7687', neo4j.auth.basic('neo4j', '12345'));
+var driver = neo4j.driver('bolt://192.168.1.211:17687', neo4j.auth.basic('neo4j', 'admin'));
 var session = driver.session();
 
 // Load user model
