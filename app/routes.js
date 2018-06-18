@@ -7,7 +7,7 @@ module.exports = function(serverApp, passport) {
   var usrID = require('../config/passport');
 
   // Home Page
-  serverApp.get('/', function(req, res) {
+  serverApp.get('/', login, function(req, res) {
     res.render('index.ejs'); // load the index.ejs file
   });
 
@@ -149,7 +149,11 @@ module.exports = function(serverApp, passport) {
   serverApp.get('/movies', isLoggedIn, function(req, res) {
     neo_session
     
-    .run('MATCH(n:Movie) RETURN n ')
+    .run('MATCH (m:Movie) \
+    OPTIONAL match (m)<-[r:WATCHED]-(u:User) \
+    WITH m, count(u) as num_watch \
+    return m, num_watch \
+    ORDER by num_watch DESC')
     .then(function(result){
       var movieArr = [];
         
@@ -177,6 +181,19 @@ module.exports = function(serverApp, passport) {
 
   //Show user profile page with login information
   serverApp.get('/profile', isLoggedIn, function(req, res) {
+    //Create User node in Neo4j Database
+    const insertingUser = neo_session.run(
+      "MERGE (u:User {id : {id}})",{id: usrID.NuserID}
+    );
+    insertingUser.then(function() {
+      console.log("Successfully created the User node (No duplicated node will be created).");
+      neo_session.close();
+    })
+    .catch(function(err){
+      console.log(err)
+      neo_session.close();
+    });
+    
     res.render('profile.ejs', {
       user : req.user // get the user out of session and pass to template
     });
@@ -246,4 +263,11 @@ function isLoggedIn(req, res, next) {
 
   // if they aren't redirect them to the home page
   res.redirect('/');
+}
+
+function login(req, res, next) {
+  if (!req.isAuthenticated())
+    return next();
+  
+  res.redirect('/movies');
 }
