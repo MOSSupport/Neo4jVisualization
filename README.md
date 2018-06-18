@@ -1,13 +1,13 @@
 # Neo4jVisualization
 
 ## Quick Start
-### Setup
+### 1. Setup
 
 ```
 $ npm install
 ```
 
-### Run locally
+### 2. Run locally
 
 * Start Neo4j ([Download & Install](http://neo4j.com/download)) locally and open the [Neo4j Browser](http://localhost:7474).
 * Default ID is 'neo4j' and you need to set password as '12345'.
@@ -29,11 +29,18 @@ $ mongod
 $ nodemon
 ```
 
-### MongoDB
+### 3. MongoDB
 
-* To access the database from the terminal, simply open new terminal or a tab and type the following command:
+[***3.1 Install MongoDB Community Edition***](https://docs.mongodb.com/manual/tutorial/install-mongodb-on-linux/)
+
+***3.2run MongoDB server***
 
 ```
-$ mongo
+mongod --dbpath /home/gmcui/Apps/mongodb/data/db --port 37017 --bind_ip 0.0.0.0
 ```
-* Or if you want to access the database with GUI, download [Studio 3T](https://studio3t.com/download/).
+
+***3.3 Begin using MongoDB***
+
+```
+mongo --host 192.168.1.211:37017
+```
