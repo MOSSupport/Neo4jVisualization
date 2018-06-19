@@ -33,7 +33,7 @@
 <body>
 
     <h1 id="h1">Movies 
-        <a href="/profile" class="btn btn-danger"><span class="fa fa-gear"></span><object align="right" style="font-size:20px">Profile</object></a>
+        <a href="/sociallogin" class="btn btn-danger"><span class="fa fa-gear"></span><object align="right" style="font-size:20px">Login</object></a>
         <a href="/visualization" class="btn btn-danger"><span class="fa fa-gear"></span><object align="right" style="font-size:20px; margin-right:15px">Graph</object></a>
     </h1>
 
@@ -60,7 +60,7 @@
         <td><%= movie.released %> </td>
         <td>
              <form method="post" action="/movies/clickWatch">
-                <button onclick = "alert('You have watched: ' + '<%= movie.title %>')"  value="<%= movie.title %>" name="inputClickWatch" >  Watch  </button>
+                <button onclick = ""  value="<%= movie.title %>" name="inputClickWatch" >  Watch  </button>
             </form>
         </td>
     </tr>
@@ -73,7 +73,7 @@
         document.getElementById("submitbtn").click();
     }
   
- </script>
+</script>
 
  
 </body>
