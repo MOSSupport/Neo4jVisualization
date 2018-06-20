@@ -236,8 +236,3 @@ function login(req, res, next) {
     return next();
   res.redirect('/profile');
 }
-
-
-function red(){
-
-}
