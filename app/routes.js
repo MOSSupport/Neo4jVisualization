@@ -45,8 +45,12 @@ module.exports = function(serverApp, passport) {
     //console.log(usrID.userID);
 
     neo_session
-      .run('MATCH (n:User {id:{id}}), (m:Movie {title:{title}}) \
-      MERGE (n) - [r:WATCHED] -> (m)', {id: usrID.userID , title : title})
+      .run("MATCH (u1:User), (m1:Movie)\
+      WHERE u1.id = {id} and m1.title = {title}\
+      MERGE (u1)-[r:WATCHED]->(m1)\
+      ON CREATE SET r.count = 1\
+      ON MATCH SET r.count = r.count + 1\
+      RETURN u1,r,m1", {id: usrID.userID , title : title})
 
       .then(function(result){
         console.log("Successfully created a relationship between the user and the movie.");
@@ -230,6 +234,10 @@ function isLoggedIn(req, res, next) {
 function login(req, res, next) {
   if (!req.isAuthenticated())
     return next();
-  
   res.redirect('/profile');
+}
+
+
+function red(){
+
 }
