@@ -20,14 +20,13 @@ module.exports = function(serverApp, passport) {
 
   // process the login form
   serverApp.post('/login', passport.authenticate('local-login', {
-    successRedirect : '/',    //if succeed, redirect to profile page
+    successRedirect : '/',    //if succeed, redirect to home page
     failureRedirect : '/login',    //if not, redirect to signup page
     failureFlash : true
   }));
 
-
   // Signup Page
-	// show the signup form
+  // show the signup form
   serverApp.get('/signup', function(req, res) {
     // render the page and pass in any flash data if it exists
     res.render('signup.ejs', { message: req.flash('signupMessage') });
@@ -43,17 +42,18 @@ module.exports = function(serverApp, passport) {
   //Add :WATCHED relationship to Neo4j
   serverApp.post('/movies/clickWatch', isLoggedIn, (req, res) => {
     var title = req.body.inputClickWatch;
-    neo_session
-    
-    .run('MATCH (n:User {id:{id}}), (m:Movie {title:{title}}) MERGE (n) - [r:WATCHED] -> \
-    (m)',{id: usrID.userID , title : title})
+    //console.log(usrID.userID);
 
-    .then(function(result){
+    neo_session
+      .run('MATCH (n:User {id:{id}}), (m:Movie {title:{title}}) \
+      MERGE (n) - [r:WATCHED] -> (m)', {id: usrID.userID , title : title})
+
+      .then(function(result){
         console.log("Successfully created a relationship between the user and the movie.");
-    })
-    .catch(function(err){
+      })
+      .catch(function(err){
         console.log(err)
-    });
+      });
   });
 
   //Person search page
@@ -61,117 +61,116 @@ module.exports = function(serverApp, passport) {
     var paramName2 = req.body.searchPerson;
       
     neo_session
-     
-    .run("MATCH (p:Person{name:{name}}) -->  (n:Movie)\
-    return p.name, n.title, n.tagline, n.released",{name: paramName2})
+      .run("MATCH (p:Person{name:{name}}) -->  (n:Movie)\
+      return p.name, n.title, n.tagline, n.released",{name: paramName2})
   
-    .then(function(result){
-      var personN = result.records[0];
-      var singleN = personN.get(0)
-      var movieArr2 = [];
+      .then(function(result){
+        var personN = result.records[0];
+        var singleN = personN.get(0)
+        var movieArr2 = [];
         
-      result.records.forEach(function(record){      
-        movieArr2.push({         
-          title: record._fields[1],
-          tagline: record._fields[2],
-          released: record._fields[3]    
-        });
-      });     
-      res.render('person', {
-        personDescription: movieArr2,
-        personNN: singleN
-      }); 
-    })
-    .catch(function(err){
-      console.log(err)
-    });
+        result.records.forEach(function(record){      
+          movieArr2.push({         
+            title: record._fields[1],
+            tagline: record._fields[2],
+            released: record._fields[3]    
+          });
+        });     
+        res.render('person', {
+          personDescription: movieArr2,
+          personNN: singleN
+        }); 
+      })
+      .catch(function(err){
+        console.log(err)
+      });
   }) 
 
   //Description search page
   serverApp.post('/movies/search/description', isLoggedIn, (req, res) =>{
     var paramName2 = req.body.descriptionMovie;
+    
     neo_session
-  
-    .run("MATCH (n:Movie{title:{title}}) <- [r]- (p:Person)\
-    return n.title, p.name, head(split(lower(type(r)), '_')), r.roles, p.born",{title: paramName2})
-  
-    .then(function(result){
-      var movieT = result.records[0];
-      var singleT = movieT.get(0)
-      var movieArr2 = [];
-          
-      result.records.forEach(function(record){
-        movieArr2.push({
-          name: record._fields[1],
-          job: record._fields[2],
-          role: record._fields[3],
-          born: record._fields[4]
-        });
-      });     
-      res.render('description', {
-        movieDescription: movieArr2,
-        movieTT: singleT
-      }); 
-    })
-    .catch(function(err){
-      console.log(err)
-    });
+      .run("MATCH (n:Movie{title:{title}}) <- [r]- (p:Person)\
+      return n.title, p.name, head(split(lower(type(r)), '_')), r.roles, p.born",{title: paramName2})
+    
+      .then(function(result){
+        var movieT = result.records[0];
+        var singleT = movieT.get(0)
+        var movieArr2 = [];
+            
+        result.records.forEach(function(record){
+          movieArr2.push({
+            name: record._fields[1],
+            job: record._fields[2],
+            role: record._fields[3],
+            born: record._fields[4]
+          });
+        });     
+        res.render('description', {
+          movieDescription: movieArr2,
+          movieTT: singleT
+        }); 
+      })
+      .catch(function(err){
+        console.log(err)
+      });
   });
   
   //Search page
   serverApp.post('/movies/search', isLoggedIn, (req, res) =>{
     var paramName = req.body.searchMovie;
-    neo_session
-      
-    .run("MATCH (n:Movie) WHERE n.title =~ {title} return n ", 
-     {title: '(?i).*' + paramName + '.*'})
-      
-    .then(function(result){
-      var movieArr = [];
-      result.records.forEach(function(record){
-        movieArr.push({
-        id:record._fields[0].identity.low,        
-        released: record._fields[0].properties.released,
-        tagline: record._fields[0].properties.tagline,
-        title: record._fields[0].properties.title
-        });
-      });     
-      res.render('search', {
-        moviesearch: movieArr
-      }); 
-    })
-    .catch(function(err){
-      console.log(err)
-    });
+    
+    neo_session  
+      .run("MATCH (n:Movie) WHERE n.title =~ {title} return n ", 
+      {title: '(?i).*' + paramName + '.*'})
+        
+      .then(function(result){
+        var movieArr = [];
+        result.records.forEach(function(record){
+          movieArr.push({
+          id:record._fields[0].identity.low,        
+          released: record._fields[0].properties.released,
+          tagline: record._fields[0].properties.tagline,
+          title: record._fields[0].properties.title
+          });
+        });     
+        res.render('search', {
+          moviesearch: movieArr
+        }); 
+      })
+      .catch(function(err){
+        console.log(err)
+      });
   });
 
   // Main page to show after login
   serverApp.get('/', function(req, res) {
-    neo_session
     
-    .run('MATCH (m:Movie) \
-    OPTIONAL match (m)<-[r:WATCHED]-(u:User) \
-    WITH m, count(u) as num_watch \
-    return m, num_watch \
-    ORDER by num_watch DESC')
-    .then(function(result){
-      var movieArr = [];
-        
-      result.records.forEach(function(record){
-        movieArr.push({
-          id: record._fields[0].identity.low,
-          title: record._fields[0].properties.title,
-          tagline: record._fields[0].properties.tagline,
-          released: record._fields[0].properties.released
+    neo_session
+      .run('MATCH (m:Movie) \
+      OPTIONAL match (m)<-[r:WATCHED]-(u:User) \
+      WITH m, count(u) as num_watch \
+      return m, num_watch \
+      ORDER by num_watch DESC')
+      .then(function(result){
+        var movieArr = [];
+          
+        result.records.forEach(function(record){
+          movieArr.push({
+            id: record._fields[0].identity.low,
+            title: record._fields[0].properties.title,
+            tagline: record._fields[0].properties.tagline,
+            released: record._fields[0].properties.released
+          });
+        });     
+        res.render('main', {
+          movies: movieArr
         });
-      });     
-      res.render('main', {
-        movies: movieArr
+      })
+      .catch(function(err){
+        console.log(err)
       });
-    })
-    .catch(function(err){
-      console.log(err)
-    });
   });
 
   //Show Visualization graph of relationship between User and Movie nodes
@@ -181,6 +180,7 @@ module.exports = function(serverApp, passport) {
 
   //Show user profile page with login information
   serverApp.get('/profile', isLoggedIn, function(req, res) {
+
     if (usrID.NuserID) {
       //Create User node in Neo4j Database
       const insertingUser = neo_session.run(
@@ -195,6 +195,7 @@ module.exports = function(serverApp, passport) {
         neo_session.close();
       });
     }
+
     res.render('profile.ejs', {
       user : req.user // get the user out of session and pass to template
     });
@@ -211,49 +212,9 @@ module.exports = function(serverApp, passport) {
 
   // Google Social Login callback
   serverApp.get('/auth/google/callback', passport.authenticate('google', {
-    successRedirect : '/movies',
+    successRedirect : '/',
     failureRedirect : '/sociallogin'
   }));
-
-  //Connect local account
-  serverApp.get('/connect/local', function(req, res) {
-    res.render('connect-local.ejs', {message : req.flash ('loginMessage')});
-  });
-
-  serverApp.post('/connect/local', passport.authorize('local-signup', {
-    successRedirect : '/profile',
-    failureRedirect : '/connect/local',
-    failureFlash : true
-  }));
-
-  //Unlink Local account
-  serverApp.get('/unlink/local', function(req, res) {
-    const user = req.user;
-    user.local.email = undefined;
-    user.local.password = undefined;
-
-    user.save(function (err) {
-      res.redirect('/profile');
-    });
-  });
-
-  //Connect Google account
-  serverApp.get('/connect/google', passport.authorize('google', {scope : ['profile','email']}));
-    
-  serverApp.get('/connect/google/callback', passport.authorize('google', {
-    successRedirect : '/profile',
-    failureRedirect : '/sociallogin'
-  }));
-
-  //Unlink Google account
-  serverApp.get('/unlink/google', function(req, res) {
-    const user = req.user;
-    user.google.token = undefined;
-
-    user.save(function (err) {
-      res.redirect('/profile');
-    });
-  });
 };
 
 // route middleware to make sure a user is logged in
@@ -270,5 +231,5 @@ function login(req, res, next) {
   if (!req.isAuthenticated())
     return next();
   
-  res.redirect('/');
+  res.redirect('/profile');
 }
