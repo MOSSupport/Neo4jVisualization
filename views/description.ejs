@@ -107,25 +107,21 @@
   </form>
 
   <table id="table1" style="border-style:double;">
-
-
     <tr>
       <td colspan="5" style="text-align: center">
         <%= movieTT %>
       </td>
     </tr>
+
     <tr>
       <th>Name</th>
       <th>Job</th>
       <th>Role</th>
       <th>Born</th>
-
-
     </tr>
 
     <tr>
       <% movieDescription.forEach(function(description){ %>
-
         <td onclick="clickFunction('<%= description.name %>')">
           <%= description.name %>
         </td>
@@ -140,9 +136,8 @@
         </td>
     </tr>
     <% }) %>
-
-
   </table>
+
   <script>
     function clickFunction(x) {
       document.getElementById("txtDescriptionPerson").value = x;
