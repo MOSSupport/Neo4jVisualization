@@ -1,9 +1,8 @@
 // ./app/routes.js
 module.exports = function(serverApp, passport) {
-  //Neo4j Configuration
-  var neo4j = require('neo4j-driver').v1;
-  var driver = neo4j.driver('bolt://192.168.1.211:17687', neo4j.auth.basic('neo4j', 'admin'));
-  var neo_session = driver.session();
+
+  var neo4j = require('../config/database');
+  var neo_session = neo4j.session;
   var usrID = require('../config/passport');
 
   // Home Page
@@ -40,7 +39,7 @@ module.exports = function(serverApp, passport) {
   }));
 
   //Add :WATCHED relationship to Neo4j
-  serverApp.post('/movies/clickWatch', isLoggedIn, (req, res) => {
+  serverApp.post('/movies/clickWatch', /* isLoggedIn, */ (req, res) => {
     var title = req.body.inputClickWatch;
     //console.log(usrID.userID);
 
@@ -61,7 +60,7 @@ module.exports = function(serverApp, passport) {
   });
 
   //Person search page
-  serverApp.post('/movies/search/description/person', isLoggedIn, (req, res) =>{  
+  serverApp.post('/movies/search/description/person', /* isLoggedIn, */ (req, res) =>{  
     var paramName2 = req.body.searchPerson;
       
     neo_session
@@ -91,13 +90,13 @@ module.exports = function(serverApp, passport) {
   }) 
 
   //Description search page
-  serverApp.post('/movies/search/description', isLoggedIn, (req, res) =>{
+  serverApp.post('/movies/search/description', /* isLoggedIn, */ (req, res) =>{
     var paramName2 = req.body.descriptionMovie;
     
     neo_session
-      .run("MATCH (n:Movie{title:{title}}) <- [r]- (p:Person)\
+      .run("MATCH (n:Movie{title:{title}}) <- [r] - (p:Person)\
       return n.title, p.name, head(split(lower(type(r)), '_')), r.roles, p.born",{title: paramName2})
-    
+
       .then(function(result){
         var movieT = result.records[0];
         var singleT = movieT.get(0)
@@ -120,70 +119,14 @@ module.exports = function(serverApp, passport) {
         console.log(err)
       });
   });
-  
-  //Search page
-  serverApp.post('/movies/search', isLoggedIn, (req, res) =>{
-    var paramName = req.body.searchMovie;
-    
-    neo_session  
-      .run("MATCH (n:Movie) WHERE n.title =~ {title} return n ", 
-      {title: '(?i).*' + paramName + '.*'})
-        
-      .then(function(result){
-        var movieArr = [];
-        result.records.forEach(function(record){
-          movieArr.push({
-          id:record._fields[0].identity.low,        
-          released: record._fields[0].properties.released,
-          tagline: record._fields[0].properties.tagline,
-          title: record._fields[0].properties.title
-          });
-        });     
-        res.render('search', {
-          moviesearch: movieArr
-        }); 
-      })
-      .catch(function(err){
-        console.log(err)
-      });
-  });
-
-  // Main page to show after login
-  serverApp.get('/', function(req, res) {
-    
-    neo_session
-      .run('MATCH (m:Movie) \
-      OPTIONAL match (m)<-[r:WATCHED]-(u:User) \
-      WITH m, count(u) as num_watch \
-      return m, num_watch \
-      ORDER by num_watch DESC')
-      .then(function(result){
-        var movieArr = [];
-          
-        result.records.forEach(function(record){
-          movieArr.push({
-            id: record._fields[0].identity.low,
-            title: record._fields[0].properties.title,
-            tagline: record._fields[0].properties.tagline,
-            released: record._fields[0].properties.released
-          });
-        });     
-        res.render('main', {
-          movies: movieArr
-        });
-      })
-      .catch(function(err){
-        console.log(err)
-      });
-  });
 
   //Show Visualization graph of relationship between User and Movie nodes
-  serverApp.get('/visualization', isLoggedIn, function(req, res) {
+  serverApp.get('/visualization', /* isLoggedIn, */ function(req, res) {
     res.render('graphVis.ejs', {});
   });
 
   //Show user profile page with login information
-  serverApp.get('/profile', isLoggedIn, function(req, res) {
+  serverApp.get('/profile', /* isLoggedIn, */ function(req, res) {
 
     if (usrID.NuserID) {
       //Create User node in Neo4j Database
@@ -222,7 +165,7 @@ module.exports = function(serverApp, passport) {
 };
 
 // route middleware to make sure a user is logged in
-function isLoggedIn(req, res, next) {
+module.exports.isLoggedIn = function (req, res, next) {
   // if user is authenticated in the session, carry on 
   if (req.isAuthenticated())
     return next();
@@ -234,5 +177,6 @@ function isLoggedIn(req, res, next) {
 function login(req, res, next) {
   if (!req.isAuthenticated())
     return next();
+  
   res.redirect('/profile');
 }
