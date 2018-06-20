@@ -107,23 +107,30 @@
   </form>
 
   <table id="table1" style="border-style:double;">
+
+
     <tr>
       <td colspan="5" style="text-align: center">
         <%= personNN %>
       </td>
     </tr>
-
     <tr>
       <th>Title</th>
+      <th>Poster</th>
       <th>TagLine</th>
       <th>Released</th>
       <th>Watch</th>
+
     </tr>
 
     <tr>
       <% personDescription.forEach(function(desPerson){ %>
+
         <td onclick="clickFunction('<%= desPerson.title %>')">
           <%= desPerson.title %>
+        </td>
+        <td>
+            <img src="http://neo4j-contrib.github.io/developer-resources/language-guides/assets/posters/<%= movie.title %>.jpg">
         </td>
         <td>
           <%= desPerson.tagline %>
@@ -134,13 +141,15 @@
         <td>
           <form method="post" action="/movies/clickWatch">
             <button onclick="alert('You have watched: ' + '<%= desPerson.title %>')" value="<%= desPerson.title %>" name="inputClickWatch">
-              Watch </button>
+            Watch </button>
           </form>
         </td>
+
     </tr>
     <% }) %>
-  </table>
 
+
+  </table>
   <script>
     function clickFunction(x) {
       document.getElementById("txtMovie").value = x;
