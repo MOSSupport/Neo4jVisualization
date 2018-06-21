@@ -3,6 +3,7 @@ module.exports = (serverApp, passport) => {
 
   var neo4j = require('../config/database');
   var neo_session = neo4j.session;
+  var usrID = require('../config/passport');
 
   // Home Page
   serverApp.get('/sociallogin', login, (req, res) => {
