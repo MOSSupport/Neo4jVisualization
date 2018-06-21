@@ -2,6 +2,8 @@
 
 <head>
   <title>Movie</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <!-- load fontawesome -->
 </head>
 
 <style>
@@ -46,11 +48,9 @@
 
   <h1 id="h1">Movies
     <a href="/sociallogin" class="btn btn-danger">
-      <span class="fa fa-gear"></span>
       <object align="right" style="font-size:20px">Login</object>
     </a>
     <a href="/visualization" class="btn btn-danger">
-      <span class="fa fa-gear"></span>
       <object align="right" style="font-size:20px; margin-right:15px">Graph</object>
     </a>
   </h1>
@@ -69,7 +69,7 @@
         <th>Poster</th>
         <th>Tagline</td>
           <th>Released</th>
-          <th>Watch</th>
+          <th >Watch</th>
     </tr>
 
     <% movies.forEach(function(movie){ %>
@@ -86,10 +86,12 @@
         <td>
           <%= movie.released %>
         </td>
-        <td>
+        <td rowspan=".3">
+          <form><button><i class="fa fa-thumbs-up" style="font-size:20px;color:green"></i></button></form>
           <form method="post" action="/movies/clickWatch">
             <button onclick="" value="<%= movie.title %>" name="inputClickWatch"> Watch </button>
           </form>
+          <form><button><i class="fa fa-thumbs-down" style="font-size:20px;color:red"></i></button></form>
         </td>
       </tr>
       <% }) %>

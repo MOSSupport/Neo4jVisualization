@@ -3,6 +3,8 @@
 
 <head>
   <title>Movie</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <!-- load fontawesome -->
 </head>
 <style>
   #h1 {
@@ -76,11 +78,9 @@
   <!-- <div class="jumbotron text-center"> -->
   <h1 id="h1">Movies
     <a href="/profile" class="btn btn-danger">
-      <span class="fa fa-gear"></span>
       <object align="right" style="font-size:20px">Profile</object>
     </a>
     <a href="/visualization" class="btn btn-danger">
-      <span class="fa fa-gear"></span>
       <object align="right" style="font-size:20px; margin-right:15px">Graph</object>
     </a>
   </h1>
@@ -138,11 +138,13 @@
         <td>
           <%= desPerson.released %>
         </td>
-        <td>
+        <td rowspan=".3">
+          <form><button><i class="fa fa-thumbs-up" style="font-size:20px;color:green"></i></button></form>
           <form method="post" action="/movies/clickWatch">
             <button onclick="alert('You have watched: ' + '<%= desPerson.title %>')" value="<%= desPerson.title %>" name="inputClickWatch">
             Watch </button>
           </form>
+          <form><button><i class="fa fa-thumbs-down" style="font-size:20px;color:red"></i></button></form>
         </td>
 
     </tr>
