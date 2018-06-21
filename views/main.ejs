@@ -6,7 +6,21 @@
   <!-- load fontawesome -->
 </head>
 
+
 <style>
+  #body {
+  width:800px;
+  }
+  #div1 {
+  margin-left: 60px;
+  float: left;
+  width: 120px;
+  }
+
+  #div2 {
+    float: right;
+    width: 120px;
+    }
   #h1 {
     font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
     text-align: center;
@@ -14,11 +28,10 @@
   }
 
   #table1 {
-    position: absolute;
-    left: 0px;
+    
     font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
     border-collapse: collapse;
-    width: 50%;
+    width: 100px;
   }
 
   #table1 td,
@@ -42,27 +55,57 @@
     background-color: #4CAF50;
     color: white;
   }
+
+  #table2 {
+    font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+    border-collapse: collapse;
+    width: 100px;
+  }
+
+  #table2 td,
+  #table2 th {
+    border: 1px solid #ddd;
+    padding: 8px;
+  }
+
+  #table2 tr:nth-child(even) {
+    background-color: #f2f2f2;
+  }
+
+  #table2 tr:hover {
+    background-color: #ddd;
+  }
+
+  #table2 th {
+    padding-top: 12px;
+    padding-bottom: 12px;
+    text-align: left;
+    background-color: #4CAF50;
+    color: white;
+  }
 </style>
 
-<body>
+<body id="body" >
 
   <h1 id="h1"><a href="/">Movie</a>
     <a href="/sociallogin" class="btn btn-danger">
+     
       <object align="right" style="font-size:20px">Login</object>
     </a>
     <a href="/visualization" class="btn btn-danger">
+     
       <object align="right" style="font-size:20px; margin-right:15px">Graph</object>
     </a>
   </h1>
 
-  <form method="post" action="/">
+  <form method="post" action="/" style="text-align: center">
     <label>Search Movie: </label>
     <label>"MATCH (n:Movie) WHERE n.title =~
       <input style="text-align: center" type="text" id="txtMovie" name="searchMovie"> return n "</label>
-    <br>
     <input type="submit" id="submitbtn" value="Submit">
   </form>
 
+<div id="div1" >
   <table id="table1" style="border-style:double;">
     <tr>
       <th>Movie</td>
@@ -72,7 +115,42 @@
           <th >Watch</th>
     </tr>
 
-    <% movies.forEach(function(movie){ %>
+  <% movies.forEach(function(movie){ %>
+    <tr>
+      <td onclick="myFunction('<%= movie.title %>')" , "createRel('<%= movie.title %>')">
+        <%= movie.title %>
+      </td>
+      <td>
+        <img src="http://neo4j-contrib.github.io/developer-resources/language-guides/assets/posters/<%= movie.title %>.jpg">
+      </td>
+      <td>
+        <%= movie.tagline %>
+      </td>
+      <td>
+        <%= movie.released %>
+      </td>
+      <td rowspan=".3">
+        <form><button><i class="fa fa-thumbs-o-up" style="font-size:20px;color:blue"></i></button></form>
+        <form method="post" action="/movies/clickWatch">
+          <button onclick="" value="<%= movie.title %>" name="inputClickWatch"><i class="fa fa-play" style="font-size:25px"></i></button>
+        </form>
+        <form><button><i class="fa fa-thumbs-o-down" style="font-size:20px;color:red"></i></button></form>
+      </td>
+    </tr>
+  <% }) %>
+</table>
+
+</div>
+
+
+<div id="div2">
+  <table id="table2">
+    <tr>
+      <th>Movie</td>
+      <th>Poster</th>
+    </tr>
+
+    <% movies2.forEach(function(movie){ %>
       <tr>
         <td onclick="myFunction('<%= movie.title %>')" , "createRel('<%= movie.title %>')">
           <%= movie.title %>
@@ -80,22 +158,10 @@
         <td>
           <img src="http://neo4j-contrib.github.io/developer-resources/language-guides/assets/posters/<%= movie.title %>.jpg">
         </td>
-        <td>
-          <%= movie.tagline %>
-        </td>
-        <td>
-          <%= movie.released %>
-        </td>
-        <td rowspan=".3">
-          <form><button><i class="fa fa-thumbs-o-up" style="font-size:20px;color:blue"></i></button></form>
-          <form method="post" action="/movies/clickWatch">
-            <button onclick="" value="<%= movie.title %>" name="inputClickWatch"><i class="fa fa-play" style="font-size:25px"></i></button>
-          </form>
-          <form><button><i class="fa fa-thumbs-o-down" style="font-size:20px;color:red"></i></button></form>
-        </td>
       </tr>
       <% }) %>
   </table>
+</div>
 
   <script>
     function myFunction(x) {
