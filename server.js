@@ -23,7 +23,7 @@ require('./config/passport.js')(passport);  //passport configuration
 //Express application setup
 serverApp.use(morgan('dev'));
 serverApp.use(cookieParser());
-serverApp.use(bodyParser());
+//serverApp.use(bodyParser());
 serverApp.use(bodyParser.urlencoded({extended : false}));
 
 //Set view engine to ejs
@@ -32,7 +32,9 @@ serverApp.set('view engine','ejs');
 //Required elements for passport module
 serverApp.use(session({
   genid: function(req) {return uuid();},
-  secret: 'ilovescotchscotchy'
+  secret: 'ilovescotchscotchy',
+  resave: true,
+  saveUninitialized: true
 }));
 
 serverApp.use(passport.initialize());
