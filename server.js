@@ -14,6 +14,7 @@ const uuid = require('uuid-v4');
 const DBconfig = require('./config/database.js');
 const port = 3000;
 const hostname = '0.0.0.0';
+const mainRoute = require('./app/mainRoute.js')
 
 //DB configuration
 mongoose.connect(DBconfig.url); //connect to the mongoDB
@@ -37,6 +38,7 @@ serverApp.use(session({
 serverApp.use(passport.initialize());
 serverApp.use(passport.session());
 serverApp.use(flash());
+serverApp.use(mainRoute);
 
 //Routes
 require('./app/routes.js')(serverApp, passport);
