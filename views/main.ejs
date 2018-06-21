@@ -55,7 +55,7 @@
     </a>
   </h1>
 
-  <form method="post" action="/movies/search">
+  <form method="post" action="/">
     <label>Search Movie: </label>
     <label>"MATCH (n:Movie) WHERE n.title =~
       <input style="text-align: center" type="text" id="txtMovie" name="searchMovie"> return n "</label>
@@ -100,7 +100,9 @@
       document.getElementById("txtMovie").value = x;
       document.getElementById("submitbtn").click();
     }
+
   </script>
+
 
 </body>
 
