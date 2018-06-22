@@ -1,125 +1,76 @@
-<html>
-
+<!DOCTYPE html>
+<html lang="en">
 <head>
-  <title>Movie</title>
+  <title>Movie Recommandation</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-  <!-- load fontawesome -->
-</head>
-
-
-<style>
-  #body {
-  width:90%;
-  }
-  #div1 {
-  margin-left: 10px;
-  float: left;
-  width: 400px;
-  }
-
-  #div2 {
-    float: right;
-    width: 400px;
+  <style>
+    /* Remove the navbar's default rounded borders and increase the bottom margin */ 
+    .navbar {
+      margin-bottom: 50px;
+      border-radius: 0;
     }
-  #h1 {
-    font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
-    text-align: center;
-    font-size: 300%;
-  }
-  #h2 {
-    font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
-  }
-  #table1 {
     
-    font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
-    border-collapse: collapse;
-    width: 500px;
-  
-  }
+    /* Remove the jumbotron's default bottom margin */ 
+     .jumbotron {
+      margin-bottom: 0;
+    }
+   
+    /* Add a gray background color and some padding to the footer */
+    footer {
+      background-color: #f2f2f2;
+      padding: 25px;
+    }
+  </style>
+</head>
+<body>
 
-  #table1 td,
-  #table1 th {
-    border: 1px solid #ddd;
-    padding: 8px;
-  }
+<div class="jumbotron">
+  <div class="container text-center">
+    <h1>Movies</h1>      
+    <p>Movie Recommandation Website</p>
+    <form method="post" action="/" class="form-inline">
+    <input placeholder="Search Movie" class="form-control"  type="text" id="txtMovie" name="searchMovie"> 
+    <input class="btn btn-danger" type="submit" id="submitbtn" value="Submit">
+    </form>
+ </div>
+</div>
 
-  #table1 tr:nth-child(even) {
-    background-color: #f2f2f2;
-  }
+<nav class="navbar navbar-inverse">
+  <div class="container-fluid">
+    <div class="collapse navbar-collapse" id="myNavbar">
+      <ul class="nav navbar-nav">
+        <li class="active"><a href="/">Home</a></li>
+        <li class="active"><a href="/">Test</a></li>        
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li><a href="/sociallogin"><span class="glyphicon glyphicon-user"></span> Log-in </a></li>
+        <li><a href="/visualization"><span class="glyphicon glyphicon"></span> Graph</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
 
-  #table1 tr:hover {
-    background-color: #ddd;
-  }
+<div class="container">    
+  <div class="row">
+    <div class="col-sm-6">
+      <div class="panel panel-primary">
+        <div class="panel-heading">Movie List</div>
+        <div class="panel-body">
+        <table class="table table-hover">
+        <tr>
+          <th>Movie</td>
+            <th>Poster</th>
+            <th>Tagline</td>
+              <th>Released</th>
+              <th >Watch</th>
+        </tr>
 
-  #table1 th {
-    padding-top: 12px;
-    padding-bottom: 12px;
-    text-align: left;
-    background-color: #4CAF50;
-    color: white;
-  }
-
-  #table2 {
-    font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
-    border-collapse: collapse;
-    width: 500px;
-  }
-
-  #table2 td,
-  #table2 th {
-    border: 1px solid #ddd;
-    padding: 8px;
-  }
-
-  #table2 tr:nth-child(even) {
-    background-color: #f2f2f2;
-  }
-
-  #table2 tr:hover {
-    background-color: #ddd;
-  }
-
-  #table2 th {
-    padding-top: 12px;
-    padding-bottom: 12px;
-    text-align: left;
-    background-color: #4CAF50;
-    color: white;
-  }
-</style>
-
-<body id="body" >
-
-  <h1 id="h1"><a href="/">Movie</a>
-    <a href="/sociallogin" class="btn btn-danger">
-     
-      <object align="right" style="font-size:20px">Login</object>
-    </a>
-    <a href="/visualization" class="btn btn-danger">
-     
-      <object align="right" style="font-size:20px; margin-right:15px">Graph</object>
-    </a>
-  </h1>
-
-  <form method="post" action="/" style="text-align: center">
-    <label>Search Movie: </label>
-    <label>"MATCH (n:Movie) WHERE n.title =~
-      <input style="text-align: center" type="text" id="txtMovie" name="searchMovie"> return n "</label>
-    <input type="submit" id="submitbtn" value="Submit">
-  </form>
-
-<div id="div1" >
-  <h2 id="h2">Movie List</h2>
-  <table id="table1" style="border-style:double;">
-    <tr>
-      <th>Movie</td>
-        <th>Poster</th>
-        <th>Tagline</td>
-          <th>Released</th>
-          <th >Watch</th>
-    </tr>
-
-  <% movies.forEach(function(movie){ %>
+      <% movies.forEach(function(movie){ %>
     <tr>
       <td onclick="myFunction('<%= movie.title %>')" , "createRel('<%= movie.title %>')">
         <%= movie.title %>
@@ -134,75 +85,70 @@
         <%= movie.released %>
       </td>
       <td rowspan=".3">
-        <% if (valid) { %>
-          <form method="post" action="/prefer">
-            <button value="1 <%= movie.title %>" name="like"><i class="fa fa-thumbs-o-up" style="font-size:20px;color:blue"></i></button>
-          </form>
-          <form method="post" action="/user">
-            <button onclick="alert('You have watched: ' + '<%= movie.title %>')" value="<%= movie.title %>" name="inputClickWatch"><i class="fa fa-play" style="font-size:25px"></i></button>
-          </form>
-          <form method="post" action="/prefer">
-            <button value="-1<%= movie.title %>" name="like"><i class="fa fa-thumbs-o-down" style="font-size:20px;color:red"></i></button>
-          </form>
-        <% } %>
-      </td>
-    </tr>
-  <% }) %>
-</table>
-
-</div>
-
-
-<div id="div2">
-  <h2 id="h2">Recommendation List</h2>
-  <table id="table2">
-    <tr>
-      <th>Movie</td>
-      <th>Poster</th>
-      <th>Tagline</td>
-      <th>Released</th>
-      <th >Watch</th>
-    </tr>
-
-    <% movies2.forEach(function(movie){ %>
-      <tr>
-        <td onclick="myFunction('<%= movie.title %>')" , "createRel('<%= movie.title %>')">
-          <%= movie.title %>
-        </td>
-        <td>
-          <img src="http://neo4j-contrib.github.io/developer-resources/language-guides/assets/posters/<%= movie.title %>.jpg">
-        </td>
-        <td>
-        <%= movie.tagline %>
-        </td>
-        <td>
-        <%= movie.released %>
-       </td>
-       <td rowspan=".3">
-        <form method="post" action="/prefer">
-          <button value="1 <%= movie.title %>" name="like"><i class="fa fa-thumbs-o-up" style="font-size:20px;color:blue"></i></button>
-        </form>
+        <form><button><i class="fa fa-thumbs-o-up" style="font-size:20px;color:blue"></i></button></form>
         <form method="post" action="/user">
           <button onclick="" value="<%= movie.title %>" name="inputClickWatch"><i class="fa fa-play" style="font-size:25px"></i></button>
         </form>
-        <form method="post" action="/prefer">
-          <button value="-1<%= movie.title %>" name="like"><i class="fa fa-thumbs-o-down" style="font-size:20px;color:red"></i></button>
-        </form>
+        <form><button><i class="fa fa-thumbs-o-down" style="font-size:20px;color:red"></i></button></form>
       </td>
-      </tr>
-      <% }) %>
-  </table>
-</div>
+    </tr>
+  <% }) %>
+    </table>
+    </div>
+      </div>
+    </div>
+    <div class="col-sm-6" > 
+      <div class="panel panel-danger">
+        <div class="panel-heading">Recommanded Movies</div>
+        <div class="panel-body">
+        <table class="table table-hover">
+        <tr>
+          <th>Movie</td>
+            <th>Poster</th>
+            <th>Tagline</td>
+              <th>Released</th>
+              <th >Watch</th>
+        </tr>
+        <% movies2.forEach(function(movie){ %>
+        <tr>
+          <td onclick="myFunction('<%= movie.title %>')" , "createRel('<%= movie.title %>')">
+            <%= movie.title %>
+          </td>
+          <td>
+            <img src="http://neo4j-contrib.github.io/developer-resources/language-guides/assets/posters/<%= movie.title %>.jpg">
+          </td>
+          <td>
+          <%= movie.tagline %>
+          </td>
+          <td>
+          <%= movie.released %>
+         </td>
+         <td rowspan=".3">
+          <form><button><i class="fa fa-thumbs-o-up" style="font-size:20px;color:blue"></i></button></form>
+          <form method="post" action="/user">
+            <button onclick="" value="<%= movie.title %>" name="inputClickWatch"><i class="fa fa-play" style="font-size:25px"></i></button>
+          </form>
+          <form><button><i class="fa fa-thumbs-o-down" style="font-size:20px;color:red"></i></button></form>
+        </td>
+        </tr>
+        <% }) %>
+    </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div><br>
 
-  <script>
+<footer class="container-fluid text-center">
+  <p>MOSA</p>  
+</footer>
+
+<script>
     function myFunction(x) {
       document.getElementById("txtMovie").value = x;
       document.getElementById("submitbtn").click();
     }
 
   </script>
-
-
 </body>
-
 </html>
