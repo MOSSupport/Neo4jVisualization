@@ -1,52 +1,99 @@
-<!-- ./views/graphVis.ejs -->
-
-<html>
-  <head>
-    <title>Movie</title>
-    <style>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Bootstrap Example</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <style>
+    /* Set height of the grid so .sidenav can be 100% (adjust if needed) */
+    .row.content {height: 1500px}
+    
+    /* Set gray background color and 100% height */
+    .sidenav {
+      background-color: #f1f1f1;
+      height: 100%;
+    }
+    
+    /* Set black background color, white text and some padding */
+    footer {
+      background-color: #555;
+      color: white;
+      padding: 15px;
+    }
+    
+    /* On small screens, set height to 'auto' for sidenav and grid */
+    @media screen and (max-width: 767px) {
+      .sidenav {
+        height: auto;
+        padding: 15px;
+      }
+      .row.content {height: auto;} 
+    }
       #viz {
           width: 900px;
           height: 700px;
       }
-    </style>
-    <script src="https://rawgit.com/neo4j-contrib/neovis.js/master/dist/neovis.js"></script>
-  </head>
-  <h1 id="h1">Movies Graph Visualization
-    <a href="/" class="btn btn-danger"><span class="fa fa-gear"></span><object align="right" style="font-size:20px">Back</object></a>
-    <a href="/profile" class="btn btn-danger"><span class="fa fa-gear"></span><object align="right" style="font-size:20px; margin-right:15px">Profile</object></a>
-  </h1>
-  <script>
-    function draw() {
-      var config = {
-        container_id: "viz",
-        server_url: "bolt://192.168.1.211:17687",
-        server_user: "neo4j",
-        server_password: "admin",
-        labels: {
-          "Person": {
-              caption: "name"   
-          },
-          "Movie": {
-              caption: "title"
-          }
-        },
+   
+  </style>
+  <script src="https://rawgit.com/neo4j-contrib/neovis.js/master/dist/neovis.js"></script>
+</head>
+<body onload = "draw()">
 
-        relationships: {
-          "WATCHED":{
-              caption: false,
-              thickness: "count"
-          }
-        },
-        initial_cypher: "MATCH p=()-[:WATCHED]->(), (n:Movie) return p,n"
-      }
-
-      var viz = new NeoVis.default(config);
-      viz.render();
-    }
-  </script>
-  <body onload = "draw()">
-    <div id="viz">
-
+<div class="container-fluid">
+  <div class="row content">
+    <div class="col-sm-3 sidenav">
+      <h4>Movies</h4>
+      <ul class="nav nav-pills nav-stacked">
+        <li class="active"><a href="/">Home</a></li>
+        <li><a href="#section2">Movie</a></li>
+        <li><a href="#section3">User</a></li>
+        <li><a href="#section3">Actor</a></li>
+      </ul>
     </div>
-  </body>
+
+    <div class="col-sm-9" id="viz">
+    </div>
+
+
+
+  </div>
+</div>
+
+<footer class="container-fluid">
+  <p>Footer Text</p>
+</footer>
+<script>
+function draw() {
+    var config = {
+      container_id: "viz",
+      server_url: "bolt://192.168.1.211:17687",
+      server_user: "neo4j",
+      server_password: "admin",
+      labels: {
+        "Person": {
+            caption: "name"   
+        },
+        "Movie": {
+            caption: "title"
+        }
+      },
+
+      relationships: {
+        "WATCHED":{
+            caption: false,
+            thickness: "count"
+        }
+      },
+      initial_cypher: "MATCH p=()-[:WATCHED]->(), (n:Movie) return p,n"
+    }
+
+    var viz = new NeoVis.default(config);
+    viz.render();
+  }
+
+</script>
+</body>
 </html>
