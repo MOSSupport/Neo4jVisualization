@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Movie Recommandation</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <style>
+    /* Remove the navbar's default rounded borders and increase the bottom margin */ 
+    .navbar {
+      margin-bottom: 50px;
+      border-radius: 0;
+    }
+    
+    /* Remove the jumbotron's default bottom margin */ 
+     .jumbotron {
+      margin-bottom: 0;
+    }
+   
+    /* Add a gray background color and some padding to the footer */
+    footer {
+      background-color: #f2f2f2;
+      padding: 25px;
+    }
+  </style>
+</head>
+<body>
+
+<div class="jumbotron">
+  <div class="container text-center">
+    <h1>Movies</h1>      
+    <p>Movie Recommandation Website</p>
+ </div>
+</div>
+
+<nav class="navbar navbar-inverse">
+  <div class="container-fluid">
+    <div class="collapse navbar-collapse" id="myNavbar">
+      <ul class="nav navbar-nav">
+        <li class="active"><a href="/">Home</a></li>
+        <li class="active"><a href="/test">Test</a></li>        
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li><a href="/sociallogin"><span class="glyphicon glyphicon-user"></span> Log-in </a></li>
+        <li><a href="/visualization"><span class="glyphicon glyphicon"></span> Graph</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<div class="container-fluid" >    
+  <div class="row" >
+    <% movies.forEach(function(movie1){ %>
+      <div class="col-sm-3"style="height:500px" >
+        <div class="panel panel-primary">
+         <div class="panel-heading"> <%= movie1.title %></div>
+         <div style="text-align:center" class="panel-body">
+         <%= movie1.tagline %>
+         </div>
+         <div class="panel-body">
+         <img style="height:320px" src="http://neo4j-contrib.github.io/developer-resources/language-guides/assets/posters/<%= movie1.title %>.jpg" ></div>    
+         
+         </div>
+      </div>
+    <% }) %> 
+  </div>
+</div>
+
+
+<footer class="container-fluid text-center">
+  <p>Online Store Copyright</p>  
+  <form class="form-inline">Get deals:
+    <input type="email" class="form-control" size="50" placeholder="Email Address">
+    <button type="button" class="btn btn-danger">Sign Up</button>
+  </form>
+</footer>
+
+</body>
+</html>
