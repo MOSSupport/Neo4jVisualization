@@ -17,11 +17,11 @@ mainRouter.route('/')
   var movieArr2 = [];
   var movieArr = [];
   neo_session
-      .run('MATCH (RecommendedMovie:Movie) 	\
-      OPTIONAL match (RecommendedMovie)<-[r:WATCHED]-(u:User) \
-      WITH RecommendedMovie, count(u) as num_watch \
+      .run('MATCH (m:Movie) 	\
+      OPTIONAL match (m)<-[r:WATCHED]-(u:User) \
+      WITH m, count(u) as num_watch \
       ORDER by num_watch DESC  \
-      return RecommendedMovie limit 3')
+      return m limit 3')
       .then(function(result){
 
         result.records.forEach(function(record){
