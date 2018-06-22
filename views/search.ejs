@@ -80,6 +80,9 @@
             <td onclick="clickFunction('<%= search.title %>')">
               <%= search.title %>
             </td>
+             <td>
+            <img src="http://neo4j-contrib.github.io/developer-resources/language-guides/assets/posters/<%= search.title %>.jpg">
+          </td>
             <td>
               <%= search.tagline %>
             </td>
@@ -89,24 +92,20 @@
             <td rowspan=".3">
               <% if (valid) { %>
                 <form method="post" action="/prefer">
-                  <button value="1 <%= movie.title %>" name="like"><i class="fa fa-thumbs-o-up" style="font-size:20px;color:blue"></i></button>
+                  <button value="1 <%= search.title %>" name="like"><i class="fa fa-thumbs-o-up" style="font-size:20px;color:blue"></i></button>
                 </form>
                 <form method="post" action="/user">
                   <button onclick="alert('You have watched: ' + '<%= search.title %>')" value="<%= search.title %>" name="inputClickWatch">
                   <i class="fa fa-play" style="font-size:25px"></i></button>
                 </form>
                 <form method="post" action="/prefer">
-                  <button value="-1<%= movie.title %>" name="like"><i class="fa fa-thumbs-o-down" style="font-size:20px;color:red"></i></button>
+                  <button value="-1<%= search.title %>" name="like"><i class="fa fa-thumbs-o-down" style="font-size:20px;color:red"></i></button>
                 </form>
               <% } %>
             </td>
           </tr>
           <% }) %>
-    
       </table>
-    
-
-    
         </div>
       </div>
     </div>
