@@ -16,34 +16,42 @@ searchRouter.route('/')
 .get((req, res, next) => {
   var movieArr2 = [];
   var movieArr = [];
-  neo_session
-      .run('MATCH (m:Movie) 	\
-      OPTIONAL match (m)<-[r:WATCHED]-(u:User) \
-      WITH m, count(u) as num_watch \
-      ORDER by num_watch DESC  \
-      return m limit 3')
-      .then(function(result){
+  var valid_id = usrID.userID;
 
-        result.records.forEach(function(record){
-          movieArr.push({
-            title: record._fields[0].properties.title,
-            tagline: record._fields[0].properties.tagline,
-            released: record._fields[0].properties.released,
-          });
-        });     
-        console.log(movieArr);
-      })
-      .catch(function(err){
-        console.log(err)
+  neo_session
+    .run('MATCH (m:Movie) 	\
+    OPTIONAL match (m)<-[r:WATCHED]-(u:User) \
+    WITH m, count(u) as num_watch \
+    ORDER by num_watch DESC  \
+    return m')
+    .then(function(result){
+
+      result.records.forEach(function(record){
+        movieArr.push({
+          title: record._fields[0].properties.title,
+          tagline: record._fields[0].properties.tagline,
+          released: record._fields[0].properties.released,
+        });
       });
-      
-            neo_session
+      if (!valid_id) {     
+        res.render('main', {
+          movies: movieArr,
+          movies2: movieArr2
+        });
+      }
+    })
+    .catch(function(err){
+      console.log(err)
+    });
+  
+  if (valid_id){ 
+    neo_session
       .run('MATCH (p1:User)-[:WATCHED]->(movie1:Movie)<-[:WATCHED]-(p2:User)-[:WATCHED]->(prod2:Movie)\
       WITH p1,p2,count(movie1) AS NrOfSharedMovies, collect(movie1) AS SharedMovies,prod2\
       WHERE NOT(p1-[:WATCHED]->prod2) AND NrOfSharedMovies > 2\
       WITH p1.id AS FirstUserId, p2.id AS SecondUserId, extract(x IN SharedMovies | x.title) AS SharedMovies, prod2 AS RecommendedMovie\
-      WHERE p1.id = "5b271058da088c57f2dcd3a0"\
-      RETURN RecommendedMovie')
+      WHERE p1.id = {id}\
+      RETURN RecommendedMovie', {id: valid_id})
       .then(function(result){
         
         result.records.forEach(function(record){
@@ -52,16 +60,19 @@ searchRouter.route('/')
             tagline: record._fields[0].properties.tagline,
             released: record._fields[0].properties.released
           });
-        });     
+        });
+        console.log(movieArr);     
+        console.log(movieArr2);
         res.render('main', {
           movies: movieArr,
           movies2: movieArr2
         });
-        console.log(movieArr2);
       })
       .catch(function(err){
         console.log(err)
       });
+  }
+  
 })
 
 //Search page
@@ -90,6 +101,7 @@ searchRouter.route('/')
       console.log(err)
     })
 });
+
 //Description Search page
 searchRouter.route('/description/')
 .post((req, res, next) => {
