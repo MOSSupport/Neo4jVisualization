@@ -46,13 +46,34 @@ privilegeRouter.route('/user')
     ON CREATE SET r.count = 1\
     ON MATCH SET r.count = r.count + 1\
     RETURN u1,r,m1", {id: usrID.userID , title : title})
-
     .then((result) => {
       console.log("Successfully created a relationship between the user and the movie.");
     })
     .catch((err) => {
-      console.log(err)
+      console.log(err);
     });
+  res.redirect('/');
 });
+
+privilegeRouter.route('/prefer')
+.post(check_login.isLoggedIn, (req, res, next) => {
+  var len = req.body.like.length;
+  var like = req.body.like.slice(0,2);
+  var title = req.body.like.slice(2,len);
+  
+  neo_session
+    .run("MATCH (u1:User), (m1:Movie)\
+    WHERE u1.id = {id} and m1.title = {title}\
+    MERGE (u1)-[r:PREFERRED]->(m1)\
+    ON CREATE SET r.like = {like}\
+    ON MATCH SET r.like = {like}\
+    RETURN u1,r,m1", {id: usrID.userID, title: title, like: like})
+    .then((result) => {
+      console.log("User pressed like/dislike button and recorded in Neo4j db");
+    })
+    .catch((err) => {
+      console.log(err);
+    })
+})
 
 module.exports = privilegeRouter;

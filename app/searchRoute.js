@@ -9,6 +9,7 @@ var usrID = require('../config/passport');
 var neo4j = require('../config/database');
 var neo_session = neo4j.session;
 
+
 searchRouter.use(bodyParser.json());
 
 //Main and movie search pages
@@ -33,10 +34,12 @@ searchRouter.route('/')
           released: record._fields[0].properties.released,
         });
       });
+      //If user is not signed in, display movie list only
       if (!valid_id) {     
         res.render('main', {
           movies: movieArr,
-          movies2: movieArr2
+          movies2: movieArr2,
+          valid: valid_id
         });
       }
     })
@@ -44,6 +47,7 @@ searchRouter.route('/')
       console.log(err)
     });
   
+  //If user is signed in, display both movie list and recommandation list.
   if (valid_id){ 
     neo_session
       .run('MATCH (p1:User)-[:WATCHED]->(movie1:Movie)<-[:WATCHED]-(p2:User)-[:WATCHED]->(prod2:Movie)\
@@ -61,11 +65,10 @@ searchRouter.route('/')
             released: record._fields[0].properties.released
           });
         });
-        console.log(movieArr);     
-        console.log(movieArr2);
         res.render('main', {
           movies: movieArr,
-          movies2: movieArr2
+          movies2: movieArr2,
+          valid: valid_id
         });
       })
       .catch(function(err){
@@ -78,7 +81,8 @@ searchRouter.route('/')
 //Search page
 .post((req, res, next) => {
   var paramName = req.body.searchMovie;
-    
+  var valid_id = usrID.userID;
+  
   neo_session  
     .run("MATCH (n:Movie) WHERE n.title =~ {title} return n ", 
     {title: '(?i).*' + paramName + '.*'})
@@ -94,7 +98,8 @@ searchRouter.route('/')
         });
       });     
       res.render('search', {
-        moviesearch: movieArr
+        moviesearch: movieArr,
+        valid: valid_id
       }); 
     })
     .catch(function(err){
@@ -136,7 +141,8 @@ searchRouter.route('/description/')
 searchRouter.route('/person/')
 .post((req, res, next) => {
   var paramName2 = req.body.searchPerson;
-      
+  var valid_id = usrID.userID;
+  
   neo_session
     .run("MATCH (p:Person{name:{name}}) -->  (n:Movie)\
     return p.name, n.title, n.tagline, n.released",{name: paramName2})
@@ -155,7 +161,8 @@ searchRouter.route('/person/')
       });     
       res.render('person', {
         personDescription: movieArr2,
-        personNN: singleN
+        personNN: singleN,
+        valid: valid_id
       }); 
     })
     .catch((err) => {

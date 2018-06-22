@@ -123,12 +123,18 @@
           <%= search.released %>
         </td>
         <td rowspan=".3">
-          <form><button><i class="fa fa-thumbs-o-up" style="font-size:20px;color:blue"></i></button></form>
-          <form method="post" action="/user">
-            <button onclick="alert('You have watched: ' + '<%= search.title %>')" value="<%= search.title %>" name="inputClickWatch">
-            <i class="fa fa-play" style="font-size:25px"></i></button>
-          </form>
-          <form><button><i class="fa fa-thumbs-o-down" style="font-size:20px;color:red"></i></button></form>
+          <% if (valid) { %>
+            <form method="post" action="/prefer">
+              <button value="1 <%= search.title %>" name="like"><i class="fa fa-thumbs-o-up" style="font-size:20px;color:blue"></i></button>
+            </form>
+            <form method="post" action="/user">
+              <button onclick="alert('You have watched: ' + '<%= search.title %>')" value="<%= search.title %>" name="inputClickWatch">
+              <i class="fa fa-play" style="font-size:25px"></i></button>
+            </form>
+            <form method="post" action="/prefer">
+              <button value="-1<%= search.title %>" name="like"><i class="fa fa-thumbs-o-down" style="font-size:20px;color:red"></i></button>
+            </form>
+          <% } %>
         </td>
       </tr>
       <% }) %>
