@@ -100,14 +100,14 @@
           <td rowspan=".3">
             <% if (valid) { %>
               <form method="post" action="/prefer">
-                <button value="1 <%= movie.title %>" name="like"><i class="fa fa-thumbs-o-up" style="font-size:20px;color:blue"></i></button>
+                <button value="1 <%= desPerson.title %>" name="like"><i class="fa fa-thumbs-o-up" style="font-size:20px;color:blue"></i></button>
               </form>
               <form method="post" action="/user">
                 <button onclick="alert('You have watched: ' + '<%= desPerson.title %>')" value="<%= desPerson.title %>" name="inputClickWatch">
                 <i class="fa fa-play" style="font-size:25px"></i></button>
               </form>
               <form method="post" action="/prefer">
-                <button value="-1<%= movie.title %>" name="like"><i class="fa fa-thumbs-o-down" style="font-size:20px;color:red"></i></button>
+                <button value="-1<%= desPerson.title %>" name="like"><i class="fa fa-thumbs-o-down" style="font-size:20px;color:red"></i></button>
               </form>
             <% } %>
           </td>
