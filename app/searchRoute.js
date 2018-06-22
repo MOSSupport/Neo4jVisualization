@@ -1,27 +1,27 @@
+// ./app/searchRoute.js
 const express = require('express');
 const bodyParser = require('body-parser');
 
-const mainRouter = express.Router();
+const searchRouter = express.Router();
 
 
 var usrID = require('../config/passport');
 var neo4j = require('../config/database');
 var neo_session = neo4j.session;
 
-
-mainRouter.use(bodyParser.json());
+searchRouter.use(bodyParser.json());
 
 //Main and movie search pages
-mainRouter.route('/')
+searchRouter.route('/')
 .get((req, res, next) => {
   var movieArr2 = [];
   var movieArr = [];
   neo_session
-      .run('MATCH (RecommendedMovie:Movie) 	\
-      OPTIONAL match (RecommendedMovie)<-[r:WATCHED]-(u:User) \
-      WITH RecommendedMovie, count(u) as num_watch \
+      .run('MATCH (m:Movie) 	\
+      OPTIONAL match (m)<-[r:WATCHED]-(u:User) \
+      WITH m, count(u) as num_watch \
       ORDER by num_watch DESC  \
-      return RecommendedMovie limit 3')
+      return m limit 3')
       .then(function(result){
 
         result.records.forEach(function(record){
@@ -37,19 +37,20 @@ mainRouter.route('/')
         console.log(err)
       });
       
-      neo_session
+            neo_session
       .run('MATCH (p1:User)-[:WATCHED]->(movie1:Movie)<-[:WATCHED]-(p2:User)-[:WATCHED]->(prod2:Movie)\
       WITH p1,p2,count(movie1) AS NrOfSharedMovies, collect(movie1) AS SharedMovies,prod2\
       WHERE NOT(p1-[:WATCHED]->prod2) AND NrOfSharedMovies > 2\
-      WITH p1.id AS FirstUserId, p2.id AS SecondUserId, extract(x IN SharedMovies | x.title) AS SharedMovies, prod2.title AS RecommendedMovie\
+      WITH p1.id AS FirstUserId, p2.id AS SecondUserId, extract(x IN SharedMovies | x.title) AS SharedMovies, prod2 AS RecommendedMovie\
       WHERE p1.id = "5b271058da088c57f2dcd3a0"\
       RETURN RecommendedMovie')
       .then(function(result){
         
         result.records.forEach(function(record){
           movieArr2.push({
-            title: record._fields[0]
-           
+            title: record._fields[0].properties.title,
+            tagline: record._fields[0].properties.tagline,
+            released: record._fields[0].properties.released
           });
         });     
         res.render('main', {
@@ -90,7 +91,7 @@ mainRouter.route('/')
     })
 });
 //Description Search page
-mainRouter.route('/description/')
+searchRouter.route('/description/')
 .post((req, res, next) => {
   var paramName2 = req.body.descriptionMovie
   neo_session
@@ -120,7 +121,7 @@ mainRouter.route('/description/')
 });
 
 //Person search page
-mainRouter.route('/person/')
+searchRouter.route('/person/')
 .post((req, res, next) => {
   var paramName2 = req.body.searchPerson;
       
@@ -151,4 +152,4 @@ mainRouter.route('/person/')
 });
 
 
-module.exports = mainRouter;
+module.exports = searchRouter;

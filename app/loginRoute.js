@@ -33,58 +33,10 @@ module.exports = (serverApp, passport) => {
 
   // process the signup form
   serverApp.post('/signup', passport.authenticate('local-signup', {
-    successRedirect : '/profile',    //if succeed, redirect to profile page
+    successRedirect : '/user',    //if succeed, redirect to profile page
     failureRedirect : '/signup',    //if not, redirect to signup page
     failureFlash : true
   }));
-
-  //Add :WATCHED relationship to Neo4j
-  serverApp.post('/movies/clickWatch', isLoggedIn, (req, res) => {
-    var title = req.body.inputClickWatch;
-    //console.log(usrID.userID);
-
-    neo_session
-      .run("MATCH (u1:User), (m1:Movie)\
-      WHERE u1.id = {id} and m1.title = {title}\
-      MERGE (u1)-[r:WATCHED]->(m1)\
-      ON CREATE SET r.count = 1\
-      ON MATCH SET r.count = r.count + 1\
-      RETURN u1,r,m1", {id: usrID.userID , title : title})
-
-      .then((result) => {
-        console.log("Successfully created a relationship between the user and the movie.");
-      })
-      .catch((err) => {
-        console.log(err)
-      });
-  });
-
-  //Show Visualization graph of relationship between User and Movie nodes
-  serverApp.get('/visualization', isLoggedIn, (req, res) => {
-    res.render('graphVis.ejs', {});
-  });
-
-  //Show user profile page with login information
-  serverApp.get('/profile',  isLoggedIn, (req, res) => {
-    if (usrID.NuserID) {
-      //Create User node in Neo4j Database
-      const insertingUser = neo_session.run(
-        "MERGE (u:User {id : {id}})",{id: usrID.NuserID}
-      );
-      insertingUser.then(() => {
-        console.log("Successfully created the User node (No duplicated node will be created).");
-        neo_session.close();
-      })
-      .catch((err) => {
-        console.log(err)
-        neo_session.close();
-      });
-    }
-
-    res.render('profile.ejs', {
-      user : req.user // get the user out of session and pass to template
-    });
-  });
 
   // Logout page 
   serverApp.get('/logout', (req, res) => {
@@ -97,13 +49,18 @@ module.exports = (serverApp, passport) => {
 
   // Google Social Login callback
   serverApp.get('/auth/google/callback', passport.authenticate('google', {
-    successRedirect : '/profile',
+    successRedirect : '/user',
     failureRedirect : '/sociallogin'
   }));
+
+  //Show Visualization graph of relationship between User and Movie nodes
+  serverApp.get('/visualization', /* isLoggedIn, */ (req, res) => {
+    res.render('graphVis.ejs', {});
+  });
 };
 
 // route middleware to make sure a user is logged in
-function isLoggedIn(req, res, next) {
+module.exports.isLoggedIn = (req, res, next) => {
   // if user is authenticated in the session, carry on 
   if (req.isAuthenticated())
     return next();
@@ -116,5 +73,5 @@ function login(req, res, next) {
   if (!req.isAuthenticated())
     return next();
   
-  res.redirect('/profile');
+  res.redirect('/user');
 }

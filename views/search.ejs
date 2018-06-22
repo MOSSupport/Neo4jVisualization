@@ -77,7 +77,7 @@
 <body>
   <!-- <div class="jumbotron text-center"> -->
   <h1 id="h1"><a href="/">Movie</a>
-    <a href="/profile" class="btn btn-danger">
+    <a href="/user" class="btn btn-danger">
       <object align="right" style="font-size:20px">Profile</object>
     </a>
     <a href="/visualization" class="btn btn-danger">
@@ -124,7 +124,7 @@
         </td>
         <td rowspan=".3">
           <form><button><i class="fa fa-thumbs-o-up" style="font-size:20px;color:blue"></i></button></form>
-          <form method="post" action="/movies/clickWatch">
+          <form method="post" action="/user">
             <button onclick="alert('You have watched: ' + '<%= search.title %>')" value="<%= search.title %>" name="inputClickWatch">
             <i class="fa fa-play" style="font-size:25px"></i></button>
           </form>
