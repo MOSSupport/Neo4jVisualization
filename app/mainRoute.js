@@ -37,19 +37,20 @@ mainRouter.route('/')
         console.log(err)
       });
       
-      neo_session
+            neo_session
       .run('MATCH (p1:User)-[:WATCHED]->(movie1:Movie)<-[:WATCHED]-(p2:User)-[:WATCHED]->(prod2:Movie)\
       WITH p1,p2,count(movie1) AS NrOfSharedMovies, collect(movie1) AS SharedMovies,prod2\
       WHERE NOT(p1-[:WATCHED]->prod2) AND NrOfSharedMovies > 2\
-      WITH p1.id AS FirstUserId, p2.id AS SecondUserId, extract(x IN SharedMovies | x.title) AS SharedMovies, prod2.title AS RecommendedMovie\
+      WITH p1.id AS FirstUserId, p2.id AS SecondUserId, extract(x IN SharedMovies | x.title) AS SharedMovies, prod2 AS RecommendedMovie\
       WHERE p1.id = "5b271058da088c57f2dcd3a0"\
       RETURN RecommendedMovie')
       .then(function(result){
         
         result.records.forEach(function(record){
           movieArr2.push({
-            title: record._fields[0]
-           
+            title: record._fields[0].properties.title,
+            tagline: record._fields[0].properties.tagline,
+            released: record._fields[0].properties.released
           });
         });     
         res.render('main', {
