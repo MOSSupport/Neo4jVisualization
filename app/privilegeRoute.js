@@ -52,7 +52,6 @@ privilegeRouter.route('/user')
     .catch((err) => {
       console.log(err);
     });
-  res.redirect('/');
 });
 
 privilegeRouter.route('/prefer')
