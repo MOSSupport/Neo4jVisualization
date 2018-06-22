@@ -1,151 +1,123 @@
-<!-- ./views/index3.ejs -->
-<html>
-
+<!DOCTYPE html>
+<html lang="en">
 <head>
-  <title>Movie</title>
+  <title>Movie Recommandation</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <style>
+    /* Remove the navbar's default rounded borders and increase the bottom margin */ 
+    .navbar {
+      margin-bottom: 50px;
+      border-radius: 0;
+    }
+    
+    /* Remove the jumbotron's default bottom margin */ 
+     .jumbotron {
+      margin-bottom: 0;
+    }
+   
+    /* Add a gray background color and some padding to the footer */
+    footer {
+      background-color: #f2f2f2;
+      padding: 25px;
+    }
+  </style>
 </head>
-<style>
-  #h1 {
-    font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
-    text-align: center;
-    font-size: 300%;
-  }
-
-  #table1 {
-    position: absolute;
-    left: 0px;
-    font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
-    border-collapse: collapse;
-    width: 50%;
-  }
-
-  #table1 td,
-  #table1 th {
-    border: 1px solid #ddd;
-    padding: 8px;
-  }
-
-  #table1 tr:nth-child(even) {
-    background-color: #f2f2f2;
-  }
-
-  #table1 tr:hover {
-    background-color: #ddd;
-  }
-
-  #table1 th {
-    padding-top: 12px;
-    padding-bottom: 12px;
-    text-align: left;
-    background-color: #4CAF50;
-    color: white;
-  }
-
-  #table2 {
-    font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
-    border-collapse: collapse;
-    width: 50%;
-    position: absolute;
-    right: 0px;
-  }
-
-  #table2 td,
-  #table2 th {
-    border: 1px solid #ddd;
-    padding: 8px;
-  }
-
-  #table12 tr:nth-child(even) {
-    background-color: #f2f2f2;
-  }
-
-  #table2 tr:hover {
-    background-color: #ddd;
-  }
-
-  #table2 th {
-    padding-top: 12px;
-    padding-bottom: 12px;
-    text-align: left;
-    background-color: #4CAF50;
-    color: white;
-  }
-</style>
-
 <body>
-  <!-- <div class="jumbotron text-center"> -->
-  <h1 id="h1"><a href="/">Movie</a>
-    <a href="/user" class="btn btn-danger">
-      <span class="fa fa-gear"></span>
-      <object align="right" style="font-size:20px">Profile</object>
-    </a>
-    <a href="/visualization" class="btn btn-danger">
-      <span class="fa fa-gear"></span>
-      <object align="right" style="font-size:20px; margin-right:15px">Graph</object>
-    </a>
-  </h1>
 
-  <form method="post" action="/">
-    <label>Search Movie</label>
-    <input type="text" id="txtMovie" name="searchMovie">
-    <br>
+<div class="jumbotron">
+  <div class="container text-center">
+    <h1>Movies</h1>      
+    <p>Movie Recommandation Website</p>
+    
+    <form method="post" action="/">
+    <input placeholder="Search Movie" type="text" id="txtMovie" name="searchMovie">
     <input type="submit" value="Submit">
-  </form>
+  </form><br>
 
   <form method="post" action="/description/">
-    <label>Description</label>
-    <input type="text" id="txtDescription" name="descriptionMovie">
-    <br>
+    <input placeholder="Description" type="text" id="txtDescription" name="descriptionMovie">
     <input type="submit" value="Submit">
-  </form>
+  </form><br>
 
   <form method="post" action="/person/">
-    <label>Person Description</label>
-    <input type="text" id="txtDescriptionPerson" name="searchPerson">
-    <br>
+    <input placeholder="Person Description" type="text" id="txtDescriptionPerson" name="searchPerson">
     <input type="submit" id="submitbtn" value="Submit">
   </form>
 
-  <table id="table1" style="border-style:double;">
-    <tr>
-      <td colspan="5" style="text-align: center">
+ </div>
+</div>
+
+<nav class="navbar navbar-inverse">
+  <div class="container-fluid">
+    <div class="collapse navbar-collapse" id="myNavbar">
+      <ul class="nav navbar-nav">
+        <li class="active"><a href="/">Home</a></li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li><a href="/user"><span class="glyphicon glyphicon-user"></span> Profile </a></li>
+        <li><a href="/visualization"><span class="glyphicon glyphicon"></span> Graph</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<div class="container">    
+  <div class="row">
+    <div class="col-sm-6">
+      <div class="panel panel-primary">
+        <div class="panel-heading">Movie List</div>
+        <div class="panel-body">
+        <table class="table table-hover">
+        <tr>
         <%= movieTT %>
-      </td>
-    </tr>
+          <th>Movie</td>
+            <th>Poster</th>
+            <th>Tagline</td>
+              <th>Released</th>
+              <th >Watch</th>
+        </tr>
 
+      
     <tr>
-      <th>Name</th>
-      <th>Job</th>
-      <th>Role</th>
-      <th>Born</th>
-    </tr>
-
-    <tr>
-      <% movieDescription.forEach(function(description){ %>
+    <% movieDescription.forEach(function(description){ %>
         <td onclick="clickFunction('<%= description.name %>')">
-          <%= description.name %>
+        <%= description.name %>
         </td>
         <td>
-          <%= description.job %>
+        <%= description.job %>
         </td>
         <td>
-          <%= description.role %>
+        <%= description.role %>
         </td>
         <td>
-          <%= description.born %>
+        <%= description.born %>
         </td>
     </tr>
     <% }) %>
-  </table>
+    </table>
 
-  <script>
-    function clickFunction(x) {
-      document.getElementById("txtDescriptionPerson").value = x;
-      document.getElementById("submitbtn").click();
-    }
-  </script>
+    
+        </div>
+      </div>
+    </div>
+  </div>
+</div><br>
 
+<footer class="container-fluid text-center">
+  <p>MOSA</p>  
+</footer>
+
+<script>
+function clickFunction(x) {
+  document.getElementById("txtDescriptionPerson").value = x;
+  document.getElementById("submitbtn").click();
+}
+
+</script>
 </body>
-<!-- </div> -->
-
 </html>
