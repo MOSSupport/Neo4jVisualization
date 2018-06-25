@@ -81,7 +81,6 @@ searchRouter.route('/')
 //Search page
 .post((req, res, next) => {
   var paramName = req.body.searchMovie;
-  var valid_id = usrID.userID;
   
   neo_session  
     .run("MATCH (n:Movie) WHERE n.title =~ {title} return n ", 
@@ -99,7 +98,7 @@ searchRouter.route('/')
       });     
       res.render('search', {
         moviesearch: movieArr,
-        valid: valid_id
+        valid: req.user
       }); 
     })
     .catch(function(err){
@@ -129,7 +128,8 @@ searchRouter.route('/description/')
     });  
     res.render('description', {
       movieDescription: movieArr2,
-      movieTT: singleT
+      movieTT: singleT,
+      valid: req.user
     }); 
   })
   .catch((err) => {
@@ -141,7 +141,6 @@ searchRouter.route('/description/')
 searchRouter.route('/person/')
 .post((req, res, next) => {
   var paramName2 = req.body.searchPerson;
-  var valid_id = usrID.userID;
   
   neo_session
     .run("MATCH (p:Person{name:{name}}) -->  (n:Movie)\
@@ -162,7 +161,7 @@ searchRouter.route('/person/')
       res.render('person', {
         personDescription: movieArr2,
         personNN: singleN,
-        valid: valid_id
+        valid: req.user
       }); 
     })
     .catch((err) => {

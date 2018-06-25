@@ -48,7 +48,11 @@
         <li class="active"><a href="/">Test</a></li>        
       </ul>
       <ul class="nav navbar-nav navbar-right">
-        <li><a href="/sociallogin"><span class="glyphicon glyphicon-user"></span> Log-in </a></li>
+        <% if (valid) { %>
+          <li><a href="/user"><span class="glyphicon glyphicon-user"></span> Profile </a></li>
+        <% } else { %>
+          <li><a href="/sociallogin"><span class="glyphicon glyphicon-user"></span> Log-in </a></li>
+        <% } %>
         <li><a href="/visualization"><span class="glyphicon glyphicon"></span> Graph</a></li>
       </ul>
     </div>
