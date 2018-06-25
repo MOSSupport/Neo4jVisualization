@@ -6,6 +6,7 @@ var googleSt = require('passport-google-oauth').OAuth2Strategy;
 
 // Load user model
 var Users = require('./users');
+var logged = false;
 
 // load the auth variables
 var auth = require('./configuration');
@@ -13,13 +14,13 @@ var auth = require('./configuration');
 module.exports = (passport) => {
   //serialize the user
   passport.serializeUser((user, done) => {
+    module.exports.userID = user.id;
     done(null, user.id);
   });
 
   //deserialize the user
   passport.deserializeUser((id, done) => {
     Users.findById(id, (err, user) => {
-      module.exports.userID = user.id;
       done(err, user);
     });
   });

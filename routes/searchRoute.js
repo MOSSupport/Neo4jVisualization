@@ -35,11 +35,11 @@ searchRouter.route('/')
         });
       });
       //If user is not signed in, display movie list only
-      if (!valid_id) {     
+      if (!req.user) {     
         res.render('main', {
           movies: movieArr,
           movies2: movieArr2,
-          valid: valid_id
+          valid: req.user
         });
       }
     })
@@ -48,7 +48,7 @@ searchRouter.route('/')
     });
   
   //If user is signed in, display both movie list and recommandation list.
-  if (valid_id){ 
+  if (req.user){ 
     neo_session
       .run('MATCH (p1:User)-[:WATCHED]->(movie1:Movie)<-[:WATCHED]-(p2:User)-[:WATCHED]->(prod2:Movie)\
       WITH p1,p2,count(movie1) AS NrOfSharedMovies, collect(movie1) AS SharedMovies,prod2\
@@ -68,7 +68,7 @@ searchRouter.route('/')
         res.render('main', {
           movies: movieArr,
           movies2: movieArr2,
-          valid: valid_id
+          valid: req.user
         });
       })
       .catch(function(err){
