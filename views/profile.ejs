@@ -13,20 +13,24 @@
       padding-top: 80px;
       word-wrap: break-word;
     }
+
+    .grid {
+      display: grid;
+
+      /* define the number of grid columns */
+      grid-template-columns: repeat( auto-fit, minmax(250px, 1fr));
+    }
   </style>
 </head>
 
 <body>
-  <div class="container">
-
+  <div class="grid-container grid-container--fit">
     <div class="page-header text-center">
       <h1>
         <span class="fa fa-address-card"></span> Profile Page</h1>
       <a href="/logout" class="btn btn-default btn-sm">Logout</a>
     </div>
-
     <div class="row">
-
       <!-- Local information -->
       <div class="col-sm-6">
         <div class="well">
@@ -47,10 +51,8 @@
             <% } else { %>
               <a href="/connect/local" class="btn btn-default">Connect Local Account</a>
               <% } %>
-
         </div>
       </div>
-
       <!-- Google Information -->
       <div class="col-sm-6">
         <div class="well">
@@ -74,13 +76,11 @@
             <% } else { %>
               <a href="/connect/google" class="btn btn-default">Connect Google Account</a>
               <% } %>
-
         </div>
       </div>
       <p align="center">Go to
         <a href="/">Movie Search</a>.</p>
     </div>
-
   </div>
 </body>
 
