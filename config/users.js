@@ -1,4 +1,4 @@
-//./app/models/users.js
+//./config/users.js
 
 const mongoose = require('mongoose'),
       bcrypt = require('bcrypt-nodejs');

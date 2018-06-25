@@ -1,8 +1,8 @@
-// ./app/routes.js
+// ./routes/loginRoutes.js
 module.exports = (serverApp, passport) => {
 
-  var neo4j = require('../config/database');
-  var neo_session = neo4j.session;
+  var neo4j = require('../config/configuration');
+  var neo_session = neo4j.databaseConfig.session;
   var usrID = require('../config/passport');
 
   // Home Page

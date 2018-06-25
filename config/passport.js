@@ -5,10 +5,10 @@ var localSt = require('passport-local').Strategy;
 var googleSt = require('passport-google-oauth').OAuth2Strategy;
 
 // Load user model
-var Users = require('../app/models/users');
+var Users = require('./users');
 
 // load the auth variables
-var auth = require('./auth');
+var auth = require('./configuration');
 
 module.exports = (passport) => {
   //serialize the user
@@ -94,9 +94,9 @@ module.exports = (passport) => {
   //Google social login
 
   passport.use(new googleSt( {
-    clientID: auth.googleAuth.clientID,
-    clientSecret: auth.googleAuth.clientSecret,
-    callbackURL: auth.googleAuth.callbackURL,
+    clientID: auth.googleLoginConfig.googleAuth.clientID,
+    clientSecret: auth.googleLoginConfig.googleAuth.clientSecret,
+    callbackURL: auth.googleLoginConfig.googleAuth.callbackURL,
     passReqToCallback: true
   },
 

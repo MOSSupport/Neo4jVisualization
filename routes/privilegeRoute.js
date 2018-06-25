@@ -1,13 +1,13 @@
-// ./app/privilegeRoute.js
+// ./routes/privilegeRoute.js
 const express = require('express');
 const bodyParser = require('body-parser');
 
 const privilegeRouter = express.Router();
 
-var check_login = require('../app/loginRoute');
+var check_login = require('./loginRoute');
 var usrID = require('../config/passport');
-var neo4j = require('../config/database');
-var neo_session = neo4j.session;
+var neo4j = require('../config/configuration');
+var neo_session = neo4j.databaseConfig.session;
 
 
 privilegeRouter.use(bodyParser.json());
