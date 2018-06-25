@@ -55,7 +55,7 @@ searchRouter.route('/')
       WHERE NOT(p1-[:WATCHED]->prod2) AND NrOfSharedMovies > 2\
       WITH p1.id AS FirstUserId, p2.id AS SecondUserId, extract(x IN SharedMovies | x.title) AS SharedMovies, prod2 AS RecommendedMovie\
       WHERE p1.id = {id}\
-      RETURN RecommendedMovie', {id: valid_id})
+      RETURN DISTINCT RecommendedMovie', {id: valid_id})
       .then(function(result){
         
         result.records.forEach(function(record){
