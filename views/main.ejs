@@ -44,6 +44,7 @@
     <div class="container text-center">
       <h1>Movies</h1>
       <p>Movie Recommandation Website</p>
+      <br>
       <form method="post" action="/" class="form-inline">
         <input placeholder="Search Movie" class="form-control" type="text" id="txtMovie" name="searchMovie">
         <input class="btn btn-danger" type="submit" id="submitbtn" value="Submit">
@@ -54,11 +55,13 @@
     <div class="grid-container grid-container--fit">
       <div class="collapse navbar-collapse" id="myNavbar">
         <ul class="nav navbar-nav">
-          <li class="active">
-            <a href="/">Home</a>
+          <li>
+            <a href="/">
+              <span class="glyphicon glyphicon-"></span> Home</a>
           </li>
-          <li class="active">
-            <a href="/test">Test</a>
+          <li>
+            <a href="/test">
+              <span class="glyphicon glyphicon-"></span>Test</a>
           </li>
         </ul>
         <ul class="nav navbar-nav navbar-right">
@@ -75,7 +78,7 @@
               <% } %>
                 <li>
                   <a href="/visualization">
-                    <span class="glyphicon glyphicon"></span> Graph</a>
+                    <span class="glyphicon glyphicon-align-left"></span> Graph</a>
                 </li>
         </ul>
       </div>
@@ -83,7 +86,8 @@
   </nav>
   <div class="grid-container--fit">
     <div class="row">
-      <div class="col-md-6">
+      <div class="col-lg-1"></div>
+      <div class="col-lg-5">
         <div class="panel panel-primary">
           <div class="panel-heading">Movie List</div>
           <div class="panel-body">
@@ -134,7 +138,7 @@
           </div>
         </div>
       </div>
-      <div class="col-md-6">
+      <div class="col-lg-5">
         <div class="panel panel-success">
           <div class="panel-heading">Recommanded Movies</div>
           <div class="panel-body">
