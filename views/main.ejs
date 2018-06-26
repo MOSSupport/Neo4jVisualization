@@ -105,7 +105,7 @@
                     <%= movie.title %>
                   </td>
                   <td>
-                    <img src="http://neo4j-contrib.github.io/developer-resources/language-guides/assets/posters/<%= movie.title %>.jpg">
+                    <img height="120" width="80" src="https://github.com/folowpig/Neo4j-Movie-Recommendation/blob/master/images/<%= movie.title %>.jpg?raw=true">
                   </td>
                   <td>
                     <%= movie.tagline %>
@@ -121,7 +121,7 @@
                         </button>
                       </form>
                       <form method="post" action="/user">
-                        <button onclick="" value="<%= movie.title %>" name="inputClickWatch">
+                        <button onclick="alert('You have watched: ' + '<%= movie.title %>')" value="<%= movie.title %>" name="inputClickWatch">
                           <i class="fa fa-play" style="font-size:25px"></i>
                         </button>
                       </form>
@@ -156,8 +156,7 @@
                     <%= movie.title %>
                   </td>
                   <td>
-                    <img src="http://neo4j-contrib.github.io/developer-resources/language-guides/assets/posters/<%= movie.title %>.jpg">
-                  </td>
+                    <img height="120" width="80" src="https://github.com/folowpig/Neo4j-Movie-Recommendation/blob/master/images/<%= movie.title %>.jpg?raw=true">
                   <td>
                     <%= movie.tagline %>
                   </td>
@@ -171,7 +170,7 @@
                       </button>
                     </form>
                     <form method="post" action="/user">
-                      <button onclick="" value="<%= movie.title %>" name="inputClickWatch">
+                      <button onclick="alert('You have watched: ' + '<%= movie.title %>')" value="<%= movie.title %>" name="inputClickWatch">
                         <i class="fa fa-play" style="font-size:25px"></i>
                       </button>
                     </form>

@@ -98,7 +98,7 @@ function draw1() {
       server_user: "neo4j",
       server_password: "sling-cleansers-tugs",
       labels: {
-        "Actor": {
+        "GENRE": {
           caption: "name"   
         },
         "Movie": {
@@ -108,11 +108,11 @@ function draw1() {
       },
 
       relationships: {
-        "ACTED_IN":{
-          caption: true
+        "IN_GENRE":{
+          caption: false
         }
       },
-      initial_cypher: "MATCH p=(n:Movie)-[:IN_GENRE]->() RETURN p LIMIT 100"
+      initial_cypher: "MATCH p=(n:Movie)-[:IN_GENRE]->() RETURN p LIMIT 50"
     }
 
     var viz = new NeoVis.default(config);
@@ -138,10 +138,10 @@ function draw1() {
 
       relationships: {
         "IN_GENRE":{
-          caption: true
+          caption: false
         }
       },
-      initial_cypher: "MATCH p=(n:Movie)-[:IN_GENRE]->() RETURN p LIMIT 100"
+      initial_cypher: "MATCH p=(n:Movie)-[:IN_GENRE]->() RETURN p LIMIT 50"
     }
     
     var viz1 = new NeoVis.default(config);

@@ -48,6 +48,7 @@ privilegeRouter.route('/user')
     RETURN u1,r,m1", {id: usrID.userID , title : title})
     .then((result) => {
       console.log("Successfully created a relationship between the user and the movie.");
+      res.redirect('/');
     })
     .catch((err) => {
       console.log(err);
@@ -69,6 +70,7 @@ privilegeRouter.route('/prefer')
     RETURN u1,r,m1", {id: usrID.userID, title: title, like: like})
     .then((result) => {
       console.log("User pressed like/dislike button and recorded in Neo4j db");
+      res.redirect("back");
     })
     .catch((err) => {
       console.log(err);

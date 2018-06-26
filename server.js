@@ -16,6 +16,7 @@ const port = 3000;
 const hostname = '0.0.0.0';
 const mainRoute = require('./routes/searchRoute')
 const privilegeRoute = require('./routes/privilegeRoute');
+const path = require('path');
 
 //DB configuration
 mongoose.connect(DBconfig.databaseConfig.url); //connect to the mongoDB
@@ -25,6 +26,7 @@ require('./config/passport.js')(passport);  //passport configuration
 serverApp.use(morgan('dev'));
 serverApp.use(cookieParser());
 //serverApp.use(bodyParser());
+serverApp.use(express.static(path.join(__dirname, 'public')));
 serverApp.use(bodyParser.urlencoded({extended : false}));
 
 //Set view engine to ejs

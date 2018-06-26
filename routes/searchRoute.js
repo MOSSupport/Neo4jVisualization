@@ -24,7 +24,7 @@ searchRouter.route('/')
     OPTIONAL match (m)<-[r:WATCHED]-(u:User) \
     WITH m, count(u) as num_watch \
     ORDER by num_watch DESC  \
-    return m')
+    RETURN m')
     .then(function(result){
 
       result.records.forEach(function(record){
@@ -83,7 +83,7 @@ searchRouter.route('/')
   var paramName = req.body.searchMovie;
   
   neo_session  
-    .run("MATCH (n:Movie) WHERE n.title =~ {title} return n ", 
+    .run("MATCH (n:Movie) WHERE n.title =~ {title} RETURN n ", 
     {title: '(?i).*' + paramName + '.*'})
         
     .then(function(result){
@@ -112,7 +112,7 @@ searchRouter.route('/description/')
   var paramName2 = req.body.descriptionMovie
   neo_session
   .run("MATCH (n:Movie{title:{title}}) <- [r] - (p:Person)\
-  return n.title, p.name, head(split(lower(type(r)), '_')), r.roles, p.born",{title: paramName2})
+  RETURN n.title, p.name, head(split(lower(type(r)), '_')), r.roles, p.born",{title: paramName2})
 
   .then((result) => {
     var movieT = result.records[0];
@@ -139,12 +139,15 @@ searchRouter.route('/description/')
 
 //Person search page
 searchRouter.route('/person/')
+.get((req, res, next) => {
+  res.render('person',{})
+})
 .post((req, res, next) => {
   var paramName2 = req.body.searchPerson;
   
   neo_session
     .run("MATCH (p:Person{name:{name}}) -->  (n:Movie)\
-    return p.name, n.title, n.tagline, n.released",{name: paramName2})
+    RETURN DISTINCT p.name, n.title, n.tagline, n.released",{name: paramName2})
 
     .then((result) => {
       var personN = result.records[0];
@@ -176,7 +179,7 @@ searchRouter.route('/test')
   
   var movieArr = [];
   neo_session
-    .run('MATCH (m:Movie) return m')
+    .run('MATCH (m:Movie) RETURN m')
     .then(function(result){ 
       result.records.forEach(function(record){
         movieArr.push({
