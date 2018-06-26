@@ -105,7 +105,11 @@
                     <%= movie.title %>
                   </td>
                   <td>
-                    <img height="120" width="80" src="https://github.com/folowpig/Neo4j-Movie-Recommendation/blob/master/images/<%= movie.title %>.jpg?raw=true">
+                    <% if (movie.title == "Frost/Nixon") { %>
+                      <img height="120" width="80" src='https://github.com/folowpig/Neo4j-Movie-Recommendation/blob/master/images/Frost:Nixon.jpg?raw=true'>
+                      <% } else { %>
+                        <img height="120" width="80" src='https://github.com/folowpig/Neo4j-Movie-Recommendation/blob/master/images/<%= movie.title %>.jpg?raw=true'>
+                        <% } %>
                   </td>
                   <td>
                     <%= movie.tagline %>
@@ -117,7 +121,8 @@
                     <% if (valid) { %>
                       <form method="post" action="/prefer">
                         <button value="1 <%= movie.title %>" name="like">
-                          <i class="fa fa-thumbs-o-up" style="font-size:20px;color:blue"></i>
+                          <i class="fa fa-thumbs-o-up" style="font-size:22.5px;color:blue">
+                          </i>
                         </button>
                       </form>
                       <form method="post" action="/user">
@@ -127,7 +132,7 @@
                       </form>
                       <form method="post" action="/prefer">
                         <button value="-1<%= movie.title %>" name="like">
-                          <i class="fa fa-thumbs-o-down" style="font-size:20px;color:red"></i>
+                          <i class="fa fa-thumbs-o-down" style="font-size:22.5px;color:red"></i>
                         </button>
                       </form>
                       <% } %>
@@ -166,7 +171,7 @@
                   <td rowspan=".3">
                     <form method="post" action="/prefer">
                       <button value="1 <%= movie.title %>" name="like">
-                        <i class="fa fa-thumbs-o-up" style="font-size:20px;color:blue"></i>
+                        <i class="fa fa-thumbs-o-up" style="font-size:22.5px;color:blue"></i>
                       </button>
                     </form>
                     <form method="post" action="/user">
@@ -176,7 +181,7 @@
                     </form>
                     <form method="post" action="/prefer">
                       <button value="-1<%= movie.title %>" name="like">
-                        <i class="fa fa-thumbs-o-down" style="font-size:20px;color:red"></i>
+                        <i class="fa fa-thumbs-o-down" style="font-size:22.5px;color:red"></i>
                       </button>
                     </form>
                   </td>
