@@ -38,33 +38,44 @@
     }
   </style>
 </head>
-
 <body>
   <div class="jumbotron">
     <div class="container text-center">
       <h1>Movies</h1>
       <p>Movie Recommandation Website</p>
-      <form method="post" action="/">
-        <input placeholder="Search Movie" type="text" id="txtMovie" name="searchMovie">
-        <input type="submit" value="Submit">
-      </form>
       <br>
-      <form method="post" action="/description/">
-        <input placeholder="Description" type="text" id="txtDescription" name="descriptionMovie">
-        <input type="submit" value="Submit">
-      </form>
-      <br>
-      <form method="post" action="/person/">
-        <input placeholder="Person Description" type="text" id="txtDescriptionPerson" name="searchPerson">
-        <input type="submit" id="submitbtn" value="Submit">
-      </form>
+      <div class="col-lg-4">
+        <form method="post" action="/">
+          <input placeholder="Search Movie" type="text" id="txtMovie" name="searchMovie">
+          <input class="btn btn-success" type="submit" value="Submit">
+        </form>
+      </div>
+      <div class="col-lg-4">
+        <form method="post" action="/description/">
+          <input placeholder="Description" type="text" id="txtDescription" name="descriptionMovie">
+          <input class="btn btn-primary" type="submit" value="Submit">
+        </form>
+      </div>
+      <div class="col-lg-4">
+        <form method="post" action="/person/">
+          <input placeholder="Person Description" type="text" id="txtDescriptionPerson" name="searchPerson">
+          <input class="btn btn-danger" type="submit" id="submitbtn" value="Submit">
+        </form>
+      </div>
     </div>
   </div>
   <nav class="navbar navbar-inverse">
     <div class="grid-container grid-container--fit">
       <div class="collapse navbar-collapse" id="myNavbar">
         <ul class="nav navbar-nav">
-          <li class="active">Home</li>
+          <li>
+            <a href="/">
+              <span class="glyphicon glyphicon-"></span> Home</a>
+          </li>
+          <li>
+            <a href="/test">
+              <span class="glyphicon glyphicon-"></span>Test</a>
+          </li>
         </ul>
         <ul class="nav navbar-nav navbar-right">
           <% if (valid) { %>
@@ -80,7 +91,7 @@
               <% } %>
                 <li>
                   <a href="/visualization">
-                    <span class="glyphicon glyphicon"></span> Graph</a>
+                    <span class="glyphicon glyphicon-align-left"></span> Graph</a>
                 </li>
         </ul>
       </div>
@@ -88,9 +99,10 @@
   </nav>
   <div class="grid-container grid-container--fit">
     <div class="row">
-      <div class="col-sm-6">
+      <div class="col-lg-1"></div>
+      <div class="col-lg-10">
         <div class="panel panel-primary">
-          <div class="panel-heading">Movie List</div>
+          <div class="panel-heading">Participant List</div>
           <div class="panel-body">
             <table class="table table-hover">
               <tr>
@@ -124,7 +136,7 @@
   </div>
   <br>
   <footer class="container-fluid text-center">
-    <p>MOSA</p>
+    <p>Copyright &copy 2003-2018 MOS. All rights reserved.</p>
   </footer>
   <script>
     function clickFunction(x) {
