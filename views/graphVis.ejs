@@ -23,6 +23,10 @@
       color: white;
       padding: 15px;
     }
+
+    li {
+      cursor: pointer;
+    }
     
     /* On small screens, set height to 'auto' for sidenav and grid */
     @media screen and (max-width: 767px) {
@@ -32,10 +36,11 @@
       }
       .row.content {height: auto;} 
     }
-      #viz {
-          width: 900px;
-          height: 700px;
-      }
+
+    #viz {
+        width: 900px;
+        height: 700px;
+    }
    
   </style>
   <script src="https://rawgit.com/neo4j-contrib/neovis.js/master/dist/neovis.js"></script>
@@ -77,7 +82,6 @@ function draw() {
             caption: "title"
         }
       },
-
       relationships: {
         "WATCHED":{
             caption: false,
@@ -106,7 +110,6 @@ function draw1() {
           size: "imdbVotes"
         }
       },
-
       relationships: {
         "IN_GENRE":{
           caption: false
@@ -135,7 +138,6 @@ function draw1() {
           caption: "name"  
         }
       },
-
       relationships: {
         "IN_GENRE":{
           caption: false

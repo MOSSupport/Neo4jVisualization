@@ -54,7 +54,7 @@ searchRouter.route('/')
       WITH p1,p2,count(movie1) AS NrOfSharedMovies, collect(movie1) AS SharedMovies,prod2\
       WHERE NOT(p1-[:WATCHED]->prod2) AND NrOfSharedMovies > 2\
       WITH p1.id AS FirstUserId, p2.id AS SecondUserId, extract(x IN SharedMovies | x.title) AS SharedMovies, prod2 AS RecommendedMovie\
-      WHERE p1.id = {id}\
+      WHERE p1.id = {id} AND NOT (p1)-[:PREFERRED {like:"-1"}]->(RecommendedMovie)\
       RETURN DISTINCT RecommendedMovie', {id: valid_id})
       .then(function(result){
         
@@ -139,9 +139,6 @@ searchRouter.route('/description/')
 
 //Person search page
 searchRouter.route('/person/')
-.get((req, res, next) => {
-  res.render('person',{})
-})
 .post((req, res, next) => {
   var paramName2 = req.body.searchPerson;
   

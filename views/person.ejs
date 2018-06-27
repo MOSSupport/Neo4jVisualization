@@ -135,7 +135,7 @@
                   <td rowspan=".3">
                     <% if (valid) { %>
                       <form method="post" action="/prefer">
-                        <button value="1 <%= desPerson.title %>" name="like">
+                        <button value="1 <%= desPerson.title %>" name="like" onclick="goback()">
                           <i class="fa fa-thumbs-o-up" style="font-size:22.5px;color:blue"></i>
                         </button>
                       </form>
@@ -145,7 +145,7 @@
                         </button>
                       </form>
                       <form method="post" action="/prefer">
-                        <button value="-1<%= desPerson.title %>" name="like">
+                        <button value="-1<%= desPerson.title %>" name="like" onclick="goback()">
                           <i class="fa fa-thumbs-o-down" style="font-size:22.5px;color:red"></i>
                         </button>
                       </form>
@@ -164,6 +164,9 @@
     function clickFunction(x) {
       document.getElementById("txtMovie").value = x;
       document.getElementById("submitbtn").click();
+    }
+    function goback() {
+      window.history.go(-1);
     }
   </script>
   <footer class="container-fluid text-center">
