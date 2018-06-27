@@ -56,6 +56,8 @@ searchRouter.route('/')
       WITH p1.id AS FirstUserId, p2.id AS SecondUserId, extract(x IN SharedMovies | x.title) AS SharedMovies, prod2 AS RecommendedMovie\
       WHERE p1.id = {id} AND NOT (p1)-[:PREFERRED {like:"-1"}]->(RecommendedMovie)\
       RETURN DISTINCT RecommendedMovie', {id: valid_id})
+      
+      /* OR (p1)-[:PREFERRED {like:"1 "}]->(RecommendedMovie) */ //can be used for recommend movies
       .then(function(result){
         
         result.records.forEach(function(record){
