@@ -16,13 +16,6 @@
       background-color: #f1f1f1;
       height: 100%;
     }
-    
-    /* Set black background color, white text and some padding */
-    footer {
-      background-color: #555;
-      color: white;
-      padding: 15px;
-    }
 
     li {
       cursor: pointer;
@@ -64,9 +57,6 @@
   </div>
 </div>
 
-<footer class="container-fluid">
-  <p>Footer Text</p>
-</footer>
 <script>
 function draw() {
     var config = {
@@ -146,8 +136,8 @@ function draw1() {
       initial_cypher: "MATCH p=(n:Movie)-[:IN_GENRE]->() RETURN p LIMIT 50"
     }
     
-    var viz1 = new NeoVis.default(config);
-    viz1.render();
+    var viz = new NeoVis.default(config);
+    viz.render();
   }
 </script>
 

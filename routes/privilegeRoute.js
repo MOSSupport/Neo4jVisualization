@@ -60,6 +60,9 @@ privilegeRouter.route('/prefer')
   var len = req.body.like.length;
   var like = req.body.like.slice(0,2);
   var title = req.body.like.slice(2,len);
+
+  if (like == "1 ") { like = 1;}
+  else { like = -1; }
   
   neo_session
     .run("MATCH (u1:User), (m1:Movie)\
@@ -70,7 +73,7 @@ privilegeRouter.route('/prefer')
     RETURN u1,r,m1", {id: usrID.userID, title: title, like: like})
     .then((result) => {
       console.log("User pressed like/dislike button and recorded in Neo4j db");
-      //res.redirect(307, "back");
+      res.redirect(req.header('referer'));
     })
     .catch((err) => {
       console.log(err);

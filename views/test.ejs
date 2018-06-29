@@ -56,15 +56,15 @@
     <% movies.forEach(function(movie1){ %>
       <div class="col-sm-3"style="height:500px" >
         <div class="panel panel-primary">
-         <div class="panel-heading" align="center"> <%= movie1.title %></div>
-         <div class="panel-body" align="center">
+          <div class="panel-heading" align="center"> <%= movie1.title %></div>
+          <div class="panel-body" align="center">
             <% if (movie1.title == "Frost/Nixon") { %>
               <img height="320" width="220" src='http://git.mobile-os.com/mos/Neo4jVisualization/raw/v0.0.002/public/images/Frost:Nixon.jpg'>
             <% } else { %>
               <img height="320" width="220" src='http://git.mobile-os.com/mos/Neo4jVisualization/raw/v0.0.002/public/images/<%= movie1.title %>.jpg'>
             <% } %>
-        </div>    
-         </div>
+          </div>    
+          </div>
       </div>
     <% }) %> 
   </div>
