@@ -16,8 +16,20 @@
     }
     
     /* Remove the jumbotron's default bottom margin */ 
-     .jumbotron {
+    .jumbotron {
       margin-bottom: 0;
+    }
+
+    .button {
+    background-color: #ff0000;
+    border: none;
+    color: white;
+    padding: 10px;
+    text-align: center;
+    text-decoration: none;
+    font-size: 16px;
+    margin: 4px 2px;
+    border-radius: 12px;
     }
    
     /* Add a gray background color and some padding to the footer */
@@ -62,10 +74,10 @@
             <!-- <form method='post' action=""> -->
               <% if (movie1.title == "Frost/Nixon") { %>
                 <input class="all" onclick="enableClick(id)" id="<%= x %>" value="<%= movie1.title %>" type="image" height="320" width="220" src='http://git.mobile-os.com/mos/Neo4jVisualization/raw/v0.0.002/public/images/Frost:Nixon.jpg'/>
-                <button hidden="true" id="b<%= x %>" onclick="disableClick('<%= x %>')">Cancel this choice</button>
+                <button class="button" hidden="true" id="b<%= x %>" onclick="disableClick('<%= x %>')">Cancel this choice</button>
               <% } else { %>
                 <input class="all" onclick="enableClick(id)" id="<%= x %>" value="<%= movie1.title %>" type="image" height="320" width="220" src='http://git.mobile-os.com/mos/Neo4jVisualization/raw/v0.0.002/public/images/<%= movie1.title %>.jpg'/>
-                <button hidden="true" id="b<%= x %>" onclick="disableClick('<%= x %>')">Cancel this choice</button>
+                <button class="button" hidden="true" id="b<%= x %>" onclick="disableClick('<%= x %>')">Cancel this choice</button>
               <% } %>
               <% x=x+1; %>
             <!-- </form> -->
