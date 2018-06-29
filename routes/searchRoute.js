@@ -4,11 +4,9 @@ const bodyParser = require('body-parser');
 
 const searchRouter = express.Router();
 
-
 var usrID = require('../config/passport');
 var neo4j = require('../config/configuration');
 var neo_session = neo4j.databaseConfig.session;
-
 
 searchRouter.use(bodyParser.json());
 
@@ -86,12 +84,14 @@ searchRouter.route('/')
             released: record._fields[0].properties.released
           });
         });
+
+        //if movieArr2 is empty, copy first 10 movieArr data & order by the released year
         if (movieArr2.length == 0) {
           movieArr2=movieArr.slice(0,10);
           movieArr2.sort(function (obj1, obj2) {
             return obj2.released - obj1.released;
           });
-        } //if movieArr2 is empty, copy first 10 movieArr data & order by the released year
+        } 
         res.render('main', {
           movies: movieArr,
           movies2: movieArr2,
@@ -200,22 +200,22 @@ searchRouter.route('/person/')
 //test search page
 searchRouter.route('/test')
 .get((req, res, next) => {
-  
   var movieArr = [];
+  var num_choice = 0;
+
   neo_session
     .run('MATCH (m:Movie) RETURN m')
     .then(function(result){ 
       result.records.forEach(function(record){
         movieArr.push({
           title: record._fields[0].properties.title,
-          tagline: record._fields[0].properties.tagline,
-          released: record._fields[0].properties.released,
+          released: record._fields[0].properties.released
         });
       });
         res.render('test', {
-          movies: movieArr,     
+          movies: movieArr,
+          num: num_choice     
         });
-        console.log(movieArr)
     })
     .catch(function(err){
       console.log(err)
