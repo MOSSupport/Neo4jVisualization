@@ -86,7 +86,12 @@ searchRouter.route('/')
             released: record._fields[0].properties.released
           });
         });
-        if (movieArr2.length == 0) {movieArr2=movieArr;} //if movieArr2 is empty, copy movieArr data
+        if (movieArr2.length == 0) {
+          movieArr2=movieArr.slice(0,10);
+          movieArr2.sort(function (obj1, obj2) {
+            return obj1.released - obj2.released;
+          });
+        } //if movieArr2 is empty, copy first 10 movieArr data & order by the released year
         res.render('main', {
           movies: movieArr,
           movies2: movieArr2,
