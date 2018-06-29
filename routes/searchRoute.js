@@ -201,7 +201,6 @@ searchRouter.route('/person/')
 searchRouter.route('/test')
 .get((req, res, next) => {
   var movieArr = [];
-  var num_choice = 0;
 
   neo_session
     .run('MATCH (m:Movie) RETURN m')
@@ -213,8 +212,7 @@ searchRouter.route('/test')
         });
       });
         res.render('test', {
-          movies: movieArr,
-          num: num_choice     
+          movies: movieArr
         });
     })
     .catch(function(err){
