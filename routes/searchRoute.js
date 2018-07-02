@@ -194,30 +194,6 @@ searchRouter.route('/person/')
     .catch((err) => {
       console.log(err)
     });
-});
-
-
-//test search page
-searchRouter.route('/test')
-.get((req, res, next) => {
-  var movieArr = [];
-
-  neo_session
-    .run('MATCH (m:Movie) RETURN m')
-    .then(function(result){ 
-      result.records.forEach(function(record){
-        movieArr.push({
-          title: record._fields[0].properties.title,
-          released: record._fields[0].properties.released
-        });
-      });
-        res.render('test', {
-          movies: movieArr
-        });
-    })
-    .catch(function(err){
-      console.log(err)
-    });
-})    
+}); 
 
 module.exports = searchRouter;

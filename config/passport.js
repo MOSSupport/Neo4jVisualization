@@ -108,19 +108,7 @@ module.exports = (passport) => {
         Users.findOne({'google.id': profile.id}, (err, user) => {
           if(err) {return doen(err);}
 
-          if(user) {
-          // if the account was linked at one point and removed, save its token, name and email only.
-            if (!user.google.token) {
-              user.google.token = token;
-              user.google.name = profile.displayName;
-              user.google.email = profile.emails[0].value;
-              user.google.data = null;
-
-              user.save((err) => {
-                if (err) { throw err; }
-                return done (null, user);
-              });
-            }
+          if(user) {  
             return done(null, user);
           } else {
             const newUser = new Users();

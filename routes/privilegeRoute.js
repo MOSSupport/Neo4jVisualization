@@ -55,6 +55,7 @@ privilegeRouter.route('/user')
     });
 });
 
+//Add like property and relationship called [:PREFERRED] to the Neo4j graph database
 privilegeRouter.route('/prefer')
 .post(check_login.isLoggedIn, (req, res, next) => {
   var len = req.body.like.length;
@@ -77,6 +78,67 @@ privilegeRouter.route('/prefer')
     .catch((err) => {
       console.log(err);
     })
-})
+});
+
+//test search page
+privilegeRouter.route('/test')
+.get((req, res, next) => {
+  var movieArr = [];
+
+  neo_session
+    .run('MATCH (m:Movie) RETURN m')
+    .then(function(result){ 
+      result.records.forEach(function(record){
+        movieArr.push({
+          title: record._fields[0].properties.title,
+          released: record._fields[0].properties.released
+        });
+      });
+        res.render('test', {
+          movies: movieArr,
+          valid: req.user
+        });
+    })
+    .catch(function(err){
+      console.log(err)
+    });
+})   
+.post(check_login.isLoggedIn, (req, res, next) => {
+  var len = req.body.like.length;
+  var like = req.body.like.slice(0,2);
+  var title = req.body.like.slice(2,len);
+
+  console.log(title);
+  
+  if (like == "1 ") { 
+    like = 1;
+  
+    neo_session
+      .run("MATCH (u1:User), (m1:Movie)\
+      WHERE u1.id = {id} and m1.title = {title}\
+      MERGE (u1)-[r:PREFERRED]->(m1)\
+      ON CREATE SET r.like = {like}\
+      ON MATCH SET r.like = {like}\
+      RETURN u1,r,m1", {id: usrID.userID, title: title, like: like})
+      .then((result) => {
+        console.log("User chose the movie from the initial list");
+      })
+      .catch((err) => {
+        console.log(err);
+      })
+  } else {
+    neo_session
+
+      .run("MATCH (u1:User{id: {id}})-[p:PREFERRED]->(m1:Movie{title:{title}})\
+      REMOVE p.like\
+      DETACH DELETE p", {id: usrID.userID, title: title})
+      .then((result) => {
+        console.log("User chose the movie from the initial list");
+      })
+      .catch((err) => {
+        console.log(err);
+      })
+  }
+});
 
 module.exports = privilegeRouter;
