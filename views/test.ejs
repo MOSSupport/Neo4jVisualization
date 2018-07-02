@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <title>Movie Recommandation</title>
   <meta charset="utf-8">
@@ -9,53 +10,76 @@
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
   <style>
-    /* Remove the navbar's default rounded borders and increase the bottom margin */ 
+    /* Remove the navbar's default rounded borders and increase the bottom margin */
+
     .navbar {
       margin-bottom: 50px;
       border-radius: 0;
     }
-    
-    /* Remove the jumbotron's default bottom margin */ 
+
+    /* Remove the jumbotron's default bottom margin */
+
     .jumbotron {
       margin-bottom: 0;
     }
 
     .button {
-    background-color: #ff0000;
-    border: none;
-    color: white;
-    padding: 10px;
-    text-align: center;
-    text-decoration: none;
-    font-size: 16px;
-    margin: 4px 2px;
-    border-radius: 12px;
+      background-color: #ff0000;
+      border: none;
+      color: white;
+      padding: 10px;
+      text-align: center;
+      text-decoration: none;
+      font-size: 16px;
+      margin: 4px 2px;
+      border-radius: 12px;
     }
-   
+    .button2 {
+      background-color: burlywood;
+      border: none;
+      color: white;
+      padding: 10px;
+      text-align: center;
+      text-decoration: none;
+      font-size: 16px;
+      margin: 4px 2px;
+      border-radius: 12px;
+      float:right;
+      height: 80px;
+      width: 350px;
+    }
+    
+
     /* Add a gray background color and some padding to the footer */
+
     footer {
       background-color: #f2f2f2;
       padding: 25px;
     }
   </style>
 </head>
+
 <body>
 
-<div class="jumbotron">
-  <div class="container text-center">
-    <h1>Movies</h1>      
-    <p>Movie Recommandation Website</p>
- </div>
-</div>
+  <div class="jumbotron">
+    <div class="container text-center">
+      <h1>Movies</h1>
+      <p>Movie Recommandation Website</p>
+    </div>
+  </div>
 
-<nav class="navbar navbar-inverse">
-  <div class="container-fluid">
-    <div class="collapse navbar-collapse" id="myNavbar">
-      <ul class="nav navbar-nav">
-        <li class="active"><a href="/">Home</a></li>
-        <li class="active"><a href="/test">Test</a></li>        
-      </ul>
-      <ul class="nav navbar-nav navbar-right">
+  <nav class="navbar navbar-inverse">
+    <div class="container-fluid">
+      <div class="collapse navbar-collapse" id="myNavbar">
+        <ul class="nav navbar-nav">
+          <li class="active">
+            <a href="/">Home</a>
+          </li>
+          <li class="active">
+            <a href="/test">Test</a>
+          </li>
+        </ul>
+        <ul class="nav navbar-nav navbar-right">
           <% if (valid) { %>
             <li>
               <a href="/user">
@@ -67,70 +91,80 @@
                   <span class="glyphicon glyphicon-user"></span> Log-in </a>
               </li>
               <% } %>
-            <li>
-              <a href="/visualization">
-                <span class="glyphicon glyphicon"></span> Graph</a>
-            </li>
-      </ul>
-    </div>
-  </div>
-</nav>
-
-<div class="container-fluid" >    
-  <div class="row" >
-    <% var x = 0; %>
-    <% movies.forEach(function(movie1){%>
-      <div class="col-sm-3"style="height:500px" >
-        <div class="panel panel-primary">
-          <div class="panel-heading" align="center"> <%= movie1.title%></div>
-          <div class="panel-body" align="center">
-              <% if (movie1.title == "Frost/Nixon") { %>
-              <form method='post' action="/test">
-                <input class="all" onclick="enableClick(id)" name="like" id="<%= x %>" value="1 <%= movie1.title %>" type="image" height="320" width="220" src='http://git.mobile-os.com/mos/Neo4jVisualization/raw/v0.0.002/public/images/Frost:Nixon.jpg'/>
-              </form>  
-              <form method='post' action="/test">  
-                <button class="button" hidden="true" name="like" id="b<%= x %>" value="-1<%= movie1.title %>" onclick="disableClick('<%= x %>')">Cancel this choice</button>
-              </form>  
-                <% } else { %>
-              <form method='post' action="/test">    
-                <input class="all" onclick="enableClick(id)" name="like" id="<%= x %>" value="1 <%= movie1.title %>" type="image" height="320" width="220" src='http://git.mobile-os.com/mos/Neo4jVisualization/raw/v0.0.002/public/images/<%= movie1.title %>.jpg'/>
-              </form>
-              <form method='post' action="/test">
-                <button class="button" hidden="true" name="like" id="b<%= x %>" value="-1<%= movie1.title %>" onclick="disableClick('<%= x %>')">Cancel this choice</button>
-              </form>
-                <% } %>
-              <% x=x+1; %>
-          </div>    
-          </div>
+                <li>
+                  <a href="/visualization">
+                    <span class="glyphicon glyphicon"></span> Graph</a>
+                </li>
+        </ul>
       </div>
-    <% }) %>
-  </div>
-</div>
+    </div>
+  </nav>
 
-<script>
-  var count = 0;
-  function enableClick(d) {
-    document.getElementById(d).hidden=true;
-    document.getElementById("b"+d).hidden=false;
-    count = count + 1;
-    if (count > 3) {
-      var elements = document.getElementsByClassName("all");
-      for(var i = 0; i < elements.length; i++) {
-        elements[i].setAttribute('disabled','disabled');
+  <div class="container-fluid">
+    <div class="row">
+      <% var x = 0; %>
+        <% movies.forEach(function(movie1){%>
+          <div class="col-sm-3">
+            <div class="panel panel-primary">
+              <div class="panel-heading" align="center">
+                <%= movie1.title%>
+              </div>
+              <div class="panel-body" align="center">
+                <% if (movie1.title == "Frost/Nixon") { %>
+                  <form method='post' action="/test">
+                    <input class="all" onclick="enableClick(id)" name="like" id="<%= x %>" value="1 <%= movie1.title %>" type="image" height="180"
+                      width="110" src='http://git.mobile-os.com/mos/Neo4jVisualization/raw/v0.0.002/public/images/Frost:Nixon.jpg'
+                    />
+                  </form>
+                  <form method='post' action="/test">
+                    <button class="button" hidden="true" name="like" id="b<%= x %>" value="-1<%= movie1.title %>" onclick="disableClick('<%= x %>')">Cancel this choice</button>
+                  </form>
+                  <% } else { %>
+                    <form method='post' action="/test">
+                      <input class="all" onclick="enableClick(id)" name="like" id="<%= x %>" value="1 <%= movie1.title %>" type="image" height="150"
+                        width="140" src='http://git.mobile-os.com/mos/Neo4jVisualization/raw/v0.0.002/public/images/<%= movie1.title %>.jpg'
+                      />
+                    </form>
+                    <form method='post' action="/test">
+                      <button class="button" hidden="true" name="like" id="b<%= x %>" value="-1<%= movie1.title %>" onclick="disableClick('<%= x %>')">Cancel this choice</button>
+                    </form>
+                    <% } %>
+                      <% x=x+1; %>
+              </div>
+            </div>
+          </div>
+          <% }) %>
+    </div>
+    <a href="/"><button id="goNext"class="button2" style="display: none">Go to Next Step </button></a>
+  </div>
+
+  <script>
+    var count = 0;
+    function enableClick(d) {
+      document.getElementById(d).hidden = true;
+      document.getElementById("b" + d).hidden = false;
+      count = count + 1;
+      if (count > 3) {
+        document.getElementById("goNext").style.display="block";
+        var elements = document.getElementsByClassName("all");
+        for (var i = 0; i < elements.length; i++) {
+          elements[i].setAttribute('disabled', 'disabled');
+        }
       }
     }
-  }
-  function disableClick(d) {
-    document.getElementById(d).hidden=false;
-    document.getElementById("b"+d).hidden=true;
-    count = count - 1;
-    if (count < 3) {
-      var elements = document.getElementsByClassName("all");
-      for(var i = 0; i < elements.length; i++) {
-        elements[i].removeAttribute('disabled');
+    function disableClick(d) {
+      document.getElementById(d).hidden = false;
+      document.getElementById("b" + d).hidden = true;
+      count = count - 1;
+      if (count < 3) {
+        document.getElementById("goNext").style.display="none";
+        var elements = document.getElementsByClassName("all");
+        for (var i = 0; i < elements.length; i++) {
+          elements[i].removeAttribute('disabled');
+        }
       }
     }
-  }
-</script>
+  </script>
 </body>
+
 </html>
