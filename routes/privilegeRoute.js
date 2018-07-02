@@ -65,7 +65,7 @@ privilegeRouter.route('/prefer')
 
 //test search page
 privilegeRouter.route('/test')
-.get((req, res, next) => {
+.get(check_login.isLoggedIn, (req, res, next) => {
   var movieArr = [];
   
   //Add new user to the Neo4j User Node
