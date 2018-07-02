@@ -65,11 +65,11 @@ privilegeRouter.route('/prefer')
 
 //test search page
 privilegeRouter.route('/test')
-.get(check_login.isLoggedIn, (req, res, next) => {
+.get(/* check_login.isLoggedIn, */ (req, res, next) => {
   var movieArr = [];
   
   //Add new user to the Neo4j User Node
-  neo_session
+/*   neo_session
     .run(
       "MERGE (u:User {id : {id}})",{id: usrID.NuserID}
     )
@@ -78,7 +78,7 @@ privilegeRouter.route('/test')
     })
     .catch((err) => {
       console.log(err)
-    });
+    }); */
   
   //Output all list of the movie
   neo_session

@@ -112,8 +112,8 @@
               <div class="panel-body" align="center">
                 <% if (movie1.title == "Frost/Nixon") { %>
                   <form method='post' action="/test">
-                    <input class="all" onclick="enableClick(id)" name="like" id="<%= x %>" value="1 <%= movie1.title %>" type="image" height="180"
-                      width="110" src='http://git.mobile-os.com/mos/Neo4jVisualization/raw/v0.0.002/public/images/Frost:Nixon.jpg'
+                    <input class="all" onclick="enableClick(id)" name="like" id="<%= x %>" value="1 <%= movie1.title %>" type="image" height="320"
+                      width="220" src='http://git.mobile-os.com/mos/Neo4jVisualization/raw/v0.0.002/public/images/Frost:Nixon.jpg'
                     />
                   </form>
                   <form method='post' action="/test">
@@ -121,15 +121,15 @@
                   </form>
                   <% } else { %>
                     <form method='post' action="/test">
-                      <input class="all" onclick="enableClick(id)" name="like" id="<%= x %>" value="1 <%= movie1.title %>" type="image" height="150"
-                        width="140" src='http://git.mobile-os.com/mos/Neo4jVisualization/raw/v0.0.002/public/images/<%= movie1.title %>.jpg'
+                      <input class="all" onclick="enableClick(id)" name="like" id="<%= x %>" value="1 <%= movie1.title %>" type="image" height="320"
+                        width="220" src='http://git.mobile-os.com/mos/Neo4jVisualization/raw/v0.0.002/public/images/<%= movie1.title %>.jpg'
                       />
                     </form>
                     <form method='post' action="/test">
                       <button class="button" hidden="true" name="like" id="b<%= x %>" value="-1<%= movie1.title %>" onclick="disableClick('<%= x %>')">Cancel this choice</button>
                     </form>
-                    <% } %>
-                      <% x=x+1; %>
+                  <% } %>
+                  <% x=x+1; %>
               </div>
             </div>
           </div>
@@ -148,7 +148,8 @@
         document.getElementById("goNext").style.display="block";
         var elements = document.getElementsByClassName("all");
         for (var i = 0; i < elements.length; i++) {
-          elements[i].setAttribute('disabled', 'disabled');
+          if (i != d)
+            elements[i].setAttribute('disabled', 'disabled');
         }
       }
     }
