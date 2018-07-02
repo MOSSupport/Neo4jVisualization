@@ -6,7 +6,7 @@ var googleSt = require('passport-google-oauth').OAuth2Strategy;
 
 // Load user model
 var Users = require('./users');
-var logged = false;
+var logged;
 
 // load the auth variables
 var auth = require('./configuration');
@@ -106,9 +106,9 @@ module.exports = (passport) => {
       //check if the user is already loggin in
       if (!req.user) {
         Users.findOne({'google.id': profile.id}, (err, user) => {
-          if(err) {return doen(err);}
-
-          if(user) {  
+          if(err) {return done(err);}
+          if(user) { 
+            module.exports.check = true;
             return done(null, user);
           } else {
             const newUser = new Users();
@@ -122,6 +122,7 @@ module.exports = (passport) => {
             newUser.save((err) => {
               if (err) { throw err; }
 
+              module.exports.check = false;
               module.exports.NuserID = newUser.id;
 
               return done(null, newUser);

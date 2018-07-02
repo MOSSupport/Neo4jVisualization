@@ -15,22 +15,6 @@ privilegeRouter.use(bodyParser.json());
 //Show user profile page with login information and watch function
 privilegeRouter.route('/user')
 .get(check_login.isLoggedIn, (req, res, next) => {
-  if (usrID.NuserID) {
-    //Create User node in Neo4j Database
-    neo_session
-      .run(
-        "MERGE (u:User {id : {id}})",{id: usrID.NuserID}
-      )
-      .then(() => {
-        console.log("Successfully created the User node (No duplicated node will be created).");
-        neo_session.close();
-      })
-      .catch((err) => {
-        console.log(err)
-        neo_session.close();
-      });
-  }
-
   res.render('profile.ejs', {
     user : req.user // get the user out of session and pass to template
   });
@@ -48,7 +32,6 @@ privilegeRouter.route('/user')
     RETURN u1,r,m1", {id: usrID.userID , title : title})
     .then((result) => {
       console.log("Successfully created a relationship between the user and the movie.");
-      res.redirect('/');
     })
     .catch((err) => {
       console.log(err);
@@ -84,7 +67,20 @@ privilegeRouter.route('/prefer')
 privilegeRouter.route('/test')
 .get((req, res, next) => {
   var movieArr = [];
-
+  
+  //Add new user to the Neo4j User Node
+  neo_session
+    .run(
+      "MERGE (u:User {id : {id}})",{id: usrID.NuserID}
+    )
+    .then(() => {
+      console.log("Successfully created the User node (No duplicated node will be created).");
+    })
+    .catch((err) => {
+      console.log(err)
+    });
+  
+  //Output all list of the movie
   neo_session
     .run('MATCH (m:Movie) RETURN m')
     .then(function(result){ 
@@ -108,8 +104,6 @@ privilegeRouter.route('/test')
   var like = req.body.like.slice(0,2);
   var title = req.body.like.slice(2,len);
 
-  console.log(title);
-  
   if (like == "1 ") { 
     like = 1;
   
@@ -133,7 +127,7 @@ privilegeRouter.route('/test')
       REMOVE p.like\
       DETACH DELETE p", {id: usrID.userID, title: title})
       .then((result) => {
-        console.log("User chose the movie from the initial list");
+        console.log("User deleted the movie from the initial list");
       })
       .catch((err) => {
         console.log(err);
