@@ -76,7 +76,7 @@
             <a href="/">Home</a>
           </li>
           <li class="active">
-            <a href="/test">Test</a>
+            <a href="/initChoose">Test</a>
           </li>
         </ul>
         <ul class="nav navbar-nav navbar-right">
@@ -111,21 +111,21 @@
               </div>
               <div class="panel-body" align="center">
                 <% if (movie1.title == "Frost/Nixon") { %>
-                  <form method='post' action="/test">
+                  <form method='post' action="/initChoose">
                     <input class="all" onclick="enableClick(id)" name="like" id="<%= x %>" value="1 <%= movie1.title %>" type="image" height="320"
                       width="220" src='http://git.mobile-os.com/mos/Neo4jVisualization/raw/v0.0.002/public/images/Frost:Nixon.jpg'
                     />
                   </form>
-                  <form method='post' action="/test">
+                  <form method='post' action="/initChoose">
                     <button class="button" hidden="true" name="like" id="b<%= x %>" value="-1<%= movie1.title %>" onclick="disableClick('<%= x %>')">Cancel this choice</button>
                   </form>
                   <% } else { %>
-                    <form method='post' action="/test">
+                    <form method='post' action="/initChoose">
                       <input class="all" onclick="enableClick(id)" name="like" id="<%= x %>" value="1 <%= movie1.title %>" type="image" height="320"
                         width="220" src='http://git.mobile-os.com/mos/Neo4jVisualization/raw/v0.0.002/public/images/<%= movie1.title %>.jpg'
                       />
                     </form>
-                    <form method='post' action="/test">
+                    <form method='post' action="/initChoose">
                       <button class="button" hidden="true" name="like" id="b<%= x %>" value="-1<%= movie1.title %>" onclick="disableClick('<%= x %>')">Cancel this choice</button>
                     </form>
                   <% } %>

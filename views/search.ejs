@@ -68,10 +68,12 @@
             <a href="/">
               <span class="glyphicon glyphicon-"></span> Home</a>
           </li>
-          <li>
-            <a href="/test">
-              <span class="glyphicon glyphicon-"></span>Test</a>
-          </li>
+          <% if (!valid) { %>
+            <li>
+              <a href="/initChoose">
+                <span class="glyphicon glyphicon-"></span>Test</a>
+            </li>
+          <% } %>
         </ul>
         <ul class="nav navbar-nav navbar-right">
           <% if (valid) { %>
