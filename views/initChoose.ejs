@@ -45,17 +45,10 @@
       margin: 4px 2px;
       border-radius: 12px;
       float:right;
-      height: 80px;
-      width: 350px;
+      height: 60px;
+      width: 300px;
     }
-    
 
-    /* Add a gray background color and some padding to the footer */
-
-    footer {
-      background-color: #f2f2f2;
-      padding: 25px;
-    }
   </style>
 </head>
 
@@ -68,7 +61,7 @@
     </div>
   </div>
 
-  <nav class="navbar navbar-inverse">
+  <nav class="navbar navbar-inverse" style="margin-bottom:1em">
     <div class="container-fluid">
       <div class="collapse navbar-collapse" id="myNavbar">
         <ul class="nav navbar-nav">
@@ -100,6 +93,10 @@
     </div>
   </nav>
 
+  <div class="container-fluid">
+    <a href="/"><button id="goNext"class="button2">Go to Search page </button></a>
+  </div>
+  
   <div class="container-fluid">
     <div class="row">
       <% var x = 0; %>
@@ -135,7 +132,7 @@
           </div>
           <% }) %>
     </div>
-    <a href="/"><button id="goNext"class="button2" style="display: none">Go to Next Step </button></a>
+    <a href="/"><button id="goNext"class="button2">Go to Search page </button></a>
   </div>
 
   <script>
@@ -145,7 +142,6 @@
       document.getElementById("b" + d).hidden = false;
       count = count + 1;
       if (count >= 3) {
-        document.getElementById("goNext").style.display="block";
         var elements = document.getElementsByClassName("all");
         for (var i = 0; i < elements.length; i++) {
           if (i != d)
