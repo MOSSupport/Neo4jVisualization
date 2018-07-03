@@ -61,20 +61,7 @@ searchRouter.route('/')
       WITH p3.id AS ThirdUserId, p4.id AS FourthUserId, extract(x1 IN SharedMovies1 | x1.title) AS SharedMovies1, prod3 AS RecommendedMovie1\
       WHERE p3.id = {id} AND NOT (p3)-[:PREFERRED {like:-1}]->(RecommendedMovie1)\
       RETURN RecommendedMovie1 AS Recom', {id: valid_id})
-      
-      /* MATCH (p1:User)-[:WATCHED]->(movie1:Movie)<-[:WATCHED]-(p2:User)-[:WATCHED]->(prod2:Movie)\
-      WITH p1,p2,count(movie1) AS NrOfSharedMovies, collect(movie1) AS SharedMovies,prod2\
-      WHERE NOT(p1-[:WATCHED]->prod2) AND NrOfSharedMovies > 2\
-      WITH p1.id AS FirstUserId, p2.id AS SecondUserId, extract(x IN SharedMovies | x.title) AS SharedMovies, prod2 AS RecommendedMovie\
-      WHERE p1.id = {id} AND NOT (p1)-[:PREFERRED {like:-1}]->(RecommendedMovie)\
-      RETURN DISTINCT RecommendedMovie AS Recom\
-      UNION\
-      MATCH (p3:User)-[:PREFERRED {like:1}]->(movie2:Movie)<-[:WATCHED]-(p4:User)-[:WATCHED]->(prod3:Movie)\
-      WITH p3,p4,count(movie2) AS NrOfSharedMovies1, collect(movie2) AS SharedMovies1,prod3\
-      WHERE NOT(p3-[:WATCHED]->prod3)\
-      WITH p3.id AS ThirdUserId, p4.id AS FourthUserId, extract(x1 IN SharedMovies1 | x1.title) AS SharedMovies1, prod3 AS RecommendedMovie1\
-      WHERE p3.id = {id} AND NOT (p3)-[:PREFERRED {like:-1}]->(RecommendedMovie1)\
-      RETURN RecommendedMovie1 AS Recom */ //can be used for recommend movies
+
       .then(function(result){
         
         result.records.forEach(function(record){
