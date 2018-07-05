@@ -2,7 +2,6 @@
 //Required modules
 const express = require('express');
 const serverApp = express();
-const mongoose = require('mongoose');
 const passport = require('passport');
 const flash = require('connect-flash');
 const morgan = require('morgan');
