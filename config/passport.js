@@ -3,10 +3,7 @@
 // Load local, facebook, and google authentication strategies
 var localSt = require('passport-local').Strategy;
 var googleSt = require('passport-google-oauth').OAuth2Strategy;
-
-// Load user model
-var Users = require('./users');
-var logged;
+var bcrypt = require('bcrypt-nodejs');
 
 // load the auth variables
 var auth = require('./configuration');
@@ -20,9 +17,9 @@ module.exports = (passport) => {
 
   //deserialize the user
   passport.deserializeUser((id, done) => {
-    Users.findById(id, (err, user) => {
-      done(err, user);
-    });
+    auth.databaseConfig.connection.query("SELECT * FROM Users WHERE id = (?)", [id], (err, result) => {
+      done(err, result[0]);
+    })
   });
 
   //Passport uses username and password as default
@@ -35,42 +32,34 @@ module.exports = (passport) => {
     
   (req, email, password, done) => {
     process.nextTick(() => {
-      if (!req.user) {
-        //Check if the user who is trying to login exist on the db
-        Users.findOne({ 'local.email' : email}, (err, user) => {
-          if (err) { return done(err);}
-          
-          //Check if there is a user with the same email
-          if (user) {
-            return done(null, false, req.flash('signupMessage','This email is already taken by someone.'));
-          } else { //if there is no user with the same email
-            const newUser = new Users();
+      //Check if the user who is trying to login exist on the db
+      var searchQuery = "SELECT email FROM Users WHERE email = (?)";
+      auth.databaseConfig.connection.query(searchQuery, [email], (err, result) => {
+        if (err) { return done(err);}
+        
+        //Check if there is a user with the same email
+        if (result.length) {
+          return done(null, false, req.flash('signupMessage','This email is already taken by someone.'));
+        } else { //if there is no user with the same email
+          var newSQLUser = new Object();
 
-            newUser.local.email = email;
-            newUser.local.password = newUser.generateHash(password);
-            newUser.local.data = null;
+          newSQLUser.email = email;
+          newSQLUser.password = password;
 
-            newUser.save ((err) => {
-              if(err) { throw err;}
-              
-              module.exports.NuserID = newUser.id;
-              
-              return done(null, newUser);
-            });
-          }
-        });
-      } else {
-        const user = req.user;
-                
-        user.local.email = email;
-        user.local.password = user.generateHash(password);
-        user.local.data = null;
+          var insertQuery = "INSERT INTO Users (profileid, token, email, password) VALUES (?)";
+          var userValue = [,,email, bcrypt.hashSync(password, bcrypt.genSaltSync(8))];
 
-        user.save ((err) => {
-          if (err) { throw err; }        
-            return done (null, user);
-        });
-      }
+          auth.databaseConfig.connection.query(insertQuery,[userValue], (err, result) => {
+            if(err) throw err;
+            console.log("User information is inserted in the table");
+            
+            console.log(result.insertId);
+            newSQLUser.id = result.insertId;
+            module.exports.NuserID = newSQLUser.id;
+            return done(null, newSQLUser);
+          });
+        }
+      }); 
     });
   }));
 
@@ -81,14 +70,15 @@ module.exports = (passport) => {
   },
 
   (req, email, password, done) => {
-    Users.findOne({'local.email' : email}, (err, user) => {
+    var searchQuery = "SELECT * FROM Users WHERE email = (?)";
+    auth.databaseConfig.connection.query(searchQuery, [email], (err, result) => {
       if(err) {return done(err);}     //if there is any error return
 
-      if(!user) {return done(null, false, req.flash('loginMessage', 'No users are found'));}
+      if(!result.length) {return done(null, false, req.flash('loginMessage', 'No users are found'));}
 
-      if(!user.validPassword(password)) {return done(null, false, req.flash('loginMessage', 'Wrong password is entered'));}
+      if(!bcrypt.compareSync(password, result[0].password)) {return done(null, false, req.flash('loginMessage', 'Wrong password is entered'));}
 
-      return done(null, user);
+      return done(null, result[0]);
     });
   }));
 
@@ -104,45 +94,33 @@ module.exports = (passport) => {
   (req, token, refreshToken, profile, done) => {
     process.nextTick(() => {
       //check if the user is already loggin in
-      if (!req.user) {
-        Users.findOne({'google.id': profile.id}, (err, user) => {
-          if(err) {return done(err);}
-          if(user) { 
-            module.exports.check = true;
-            return done(null, user);
-          } else {
-            const newUser = new Users();
+      var searchQuery = "SELECT * FROM Users WHERE profileid = (?)";
+      auth.databaseConfig.connection.query(searchQuery, [profile.id], (err, result) => {
+        if(err) {return done(err);}
+        if(result.length) { 
+          module.exports.check = true;
+          return done(null, result[0]);
+        } else {
+          var newSQLUser = new Object();
 
-            newUser.google.id = profile.id;
-            newUser.google.token = token;
-            newUser.google.name = profile.displayName;
-            newUser.google.email = profile.emails[0].value;
-            newUser.google.data = null;
+          newSQLUser.profileid = profile.id;
+          newSQLUser.token = token;
+          newSQLUser.email = profile.emails[0].value;
 
-            newUser.save((err) => {
-              if (err) { throw err; }
+          var insertQuery = "INSERT INTO Users (profileid, token, email, password) VALUES (?)";
+          var userValue = [profile.id, token, profile.emails[0].value,null];
 
-              module.exports.check = false;
-              module.exports.NuserID = newUser.id;
-
-              return done(null, newUser);
-            });
-          }
-        });
-      } else {
-        const user = req.user;
-
-        user.google.id = profile.id;
-        user.google.token = token;
-        user.google.name = profile.displayName;
-        user.google.email = profile.emails[0].value;
-        user.google.data = null;
-
-        user.save((err) => {
-          if (err) { throw err; }
-          return done (null, user);
-        });
-      }
+          auth.databaseConfig.connection.query(insertQuery,[userValue], (err, result) => {
+            if(err) throw err;
+            console.log("User information is inserted in the table");
+            
+            console.log(result.insertId);
+            newSQLUser.id = result.insertId;
+            module.exports.NuserID = newSQLUser.id;
+            return done(null, newSQLUser);
+          });
+        }
+      });
     });
   }));
 };

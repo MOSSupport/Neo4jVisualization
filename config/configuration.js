@@ -1,4 +1,5 @@
 // ./config/database.js
+var mysql = require('mysql');
 var neo4j = require('neo4j-driver').v1;
 var driver = neo4j.driver('bolt://192.168.1.211:17687', neo4j.auth.basic('neo4j', 'admin'));
 
@@ -13,6 +14,11 @@ module.exports.googleLoginConfig = {
 
 module.exports.databaseConfig = {
   //mongoDB database url
-  'url' : 'mongodb://192.168.1.211:37017/UserInfo',
+  'connection' : mysql.createConnection({
+      host : "localhost",
+      user : "root",
+      password : "admin",
+      database : "UserInfo"
+  }),
   'session' : driver.session()
 };

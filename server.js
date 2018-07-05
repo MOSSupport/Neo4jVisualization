@@ -11,16 +11,15 @@ const bodyParser = require('body-parser');
 const session = require('express-session');
 const http = require('http');
 const uuid = require('uuid-v4');
-const DBconfig = require('./config/configuration');
 const port = 3000;
 const hostname = '0.0.0.0';
 const mainRoute = require('./routes/searchRoute')
 const privilegeRoute = require('./routes/privilegeRoute');
 const path = require('path');
+const sqldb = require('./config/create_database')
 
-//DB configuration
-mongoose.connect(DBconfig.databaseConfig.url); //connect to the mongoDB
-require('./config/passport.js')(passport);  //passport configuration
+//passport configuration
+require('./config/passport.js')(passport);
 
 //Express application setup
 serverApp.use(morgan('dev'));
