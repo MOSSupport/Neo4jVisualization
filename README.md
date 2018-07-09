@@ -36,6 +36,7 @@ mysql -u root
 ```
 ***3.4 Change the root password***
 * root password need to be changed to 'admin'
+
 ```sql
 mysql> FLUSH PRIVILEGES;
 mysql> ALTER USER 'root'@'localhost' IDENTIFIED BY 'admin';
