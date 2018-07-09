@@ -110,7 +110,7 @@
                 <% if (movie1.title == "Frost/Nixon") { %>
                   <form method='post' action="/initChoose">
                     <input class="all" onclick="enableClick(id)" name="like" id="<%= x %>" value="1 <%= movie1.title %>" type="image" height="320"
-                      width="220" src='https://github.com/folowpig/Neo4j-Movie-Recommendation/blob/master/images/Frost:Nixon.jpg?raw=true'
+                      width="220" src='/images/Frost:Nixon.jpg'
                     />
                   </form>
                   <form method='post' action="/initChoose">
@@ -119,7 +119,7 @@
                   <% } else { %>
                     <form method='post' action="/initChoose">
                       <input class="all" onclick="enableClick(id)" name="like" id="<%= x %>" value="1 <%= movie1.title %>" type="image" height="320"
-                        width="220" src='https://github.com/folowpig/Neo4j-Movie-Recommendation/blob/master/images/<%= movie1.title %>.jpg?raw=true'
+                        width="220" src='/images/<%= movie1.title %>.jpg'
                       />
                     </form>
                     <form method='post' action="/initChoose">

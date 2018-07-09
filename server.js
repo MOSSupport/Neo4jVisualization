@@ -2,7 +2,6 @@
 //Required modules
 const express = require('express');
 const serverApp = express();
-const mongoose = require('mongoose');
 const passport = require('passport');
 const flash = require('connect-flash');
 const morgan = require('morgan');
@@ -25,7 +24,7 @@ require('./config/passport.js')(passport);
 serverApp.use(morgan('dev'));
 serverApp.use(cookieParser());
 //serverApp.use(bodyParser());
-serverApp.use(express.static(path.join(__dirname, 'public')));
+serverApp.use(express.static(path.join(__dirname, '/public')));
 serverApp.use(bodyParser.urlencoded({extended : false}));
 
 //Set view engine to ejs
