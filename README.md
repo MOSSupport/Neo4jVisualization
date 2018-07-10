@@ -25,15 +25,26 @@ brew install mariadb
 
 ***3.2 Run MariaDB server***
 
+* For __Windows__ users, go to directory where mysqld.exe is located and execute following command
+
+```
+mysqld.exe --console
+```
+
+* For __Mac__ users, execute following command
+
 ```
 mysql.server start
 ```
 
 ***3.3 Begin using MariaDB***
 
+* For __Windows__ users, go to directory where mysql.exe is located to execute following command
+
 ```
 mysql -u root
 ```
+
 ***3.4 Change the root password***
 * root password need to be changed to 'admin'
 
