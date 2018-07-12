@@ -15,7 +15,7 @@ const hostname = '0.0.0.0';
 const mainRoute = require('./routes/searchRoute')
 const privilegeRoute = require('./routes/privilegeRoute');
 const path = require('path');
-const sqldb = require('./config/create_database')
+const sqldb = require('./config/create_database');
 
 //passport configuration
 require('./config/passport.js')(passport);

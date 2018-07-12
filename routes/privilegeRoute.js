@@ -32,6 +32,7 @@ privilegeRouter.route('/user')
     RETURN u1,r,m1", {id: usrID.userID , title : title})
     .then((result) => {
       console.log("Successfully created a relationship between the user and the movie.");
+      
     })
     .catch((err) => {
       console.log(err);
