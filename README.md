@@ -16,7 +16,8 @@
 
 [***3.1 Install MariaDB***](https://downloads.mariadb.org/mariadb/10.3.8/)
 
-* If you are using Mac and have Homebrew installed on your computer, then you can install using following command:
+* If you are using __Windows__, then download .zip package file and unzip the package in the desired directory.
+* If you are using __Mac__ and have Homebrew installed on your computer, then you can install using following command:
 
 ```
 brew install mariadb
