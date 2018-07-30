@@ -16,12 +16,9 @@
       background-color: #f1f1f1;
       height: 100%;
     }
-    
-    /* Set black background color, white text and some padding */
-    footer {
-      background-color: #555;
-      color: white;
-      padding: 15px;
+
+    li {
+      cursor: pointer;
     }
     
     /* On small screens, set height to 'auto' for sidenav and grid */
@@ -32,15 +29,16 @@
       }
       .row.content {height: auto;} 
     }
-      #viz {
-          width: 900px;
-          height: 700px;
-      }
+
+    #viz {
+        width: 900px;
+        height: 700px;
+    }
    
   </style>
   <script src="https://rawgit.com/neo4j-contrib/neovis.js/master/dist/neovis.js"></script>
 </head>
-<body onload = "draw()">
+<body onload="draw()">
 
 <div class="container-fluid">
   <div class="row content">
@@ -48,23 +46,17 @@
       <h4>Movies</h4>
       <ul class="nav nav-pills nav-stacked">
         <li class="active"><a href="/">Home</a></li>
-        <li><a href="#section2">Movie</a></li>
-        <li><a href="#section3">User</a></li>
-        <li><a href="#section3">Actor</a></li>
+        <li onclick="draw()"><a>Thickness (관계의 두께)</a></li>
+        <li onclick="draw1()"><a>Node Size (노드 크기)</a></li>
+        <li onclick="draw2()"><a>Community (색 구분)</a></li>
       </ul>
     </div>
 
     <div class="col-sm-9" id="viz">
     </div>
-
-
-
   </div>
 </div>
 
-<footer class="container-fluid">
-  <p>Footer Text</p>
-</footer>
 <script>
 function draw() {
     var config = {
@@ -73,14 +65,13 @@ function draw() {
       server_user: "neo4j",
       server_password: "admin",
       labels: {
-        "Person": {
-            caption: "name"   
+        "User": {
+            caption: "id"   
         },
         "Movie": {
             caption: "title"
         }
       },
-
       relationships: {
         "WATCHED":{
             caption: false,
@@ -94,6 +85,61 @@ function draw() {
     viz.render();
   }
 
+function draw1() {
+    var config = {
+      container_id: "viz",
+      server_url: "bolt://54.85.95.124:33762",
+      server_user: "neo4j",
+      server_password: "sling-cleansers-tugs",
+      labels: {
+        "Genre": {
+          caption: "name"   
+        },
+        "Movie": {
+          caption: "title",
+          size: "imdbVotes"
+        }
+      },
+      relationships: {
+        "IN_GENRE":{
+          caption: false
+        }
+      },
+      initial_cypher: "MATCH p=(n:Movie)-[:IN_GENRE]->() RETURN p LIMIT 50"
+    }
+
+    var viz = new NeoVis.default(config);
+    viz.render();
+  }
+
+  function draw2() {
+    var config = {
+      container_id: "viz",
+      server_url: "bolt://54.85.95.124:33762",
+      server_user: "neo4j",
+      server_password: "sling-cleansers-tugs",
+      labels: {
+        "Movie": {
+          caption: "title",
+          size: "imdbVotes",
+          community: "community"
+        },
+        "Genre": {
+          caption: "name"  
+        }
+      },
+      relationships: {
+        "IN_GENRE":{
+          caption: false
+        }
+      },
+      initial_cypher: "MATCH p=(n:Movie)-[:IN_GENRE]->() RETURN p LIMIT 50"
+    }
+    
+    var viz = new NeoVis.default(config);
+    viz.render();
+  }
 </script>
+
 </body>
 </html>

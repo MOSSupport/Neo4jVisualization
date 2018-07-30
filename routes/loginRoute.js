@@ -1,9 +1,9 @@
-// ./app/routes.js
+// ./routes/loginRoutes.js
 module.exports = (serverApp, passport) => {
 
-  var neo4j = require('../config/database');
-  var neo_session = neo4j.session;
-  var usrID = require('../config/passport');
+  var neo4j = require('../config/configuration');
+  var neo_session = neo4j.databaseConfig.session;
+  var pass = require("../config/passport");
 
   // Home Page
   serverApp.get('/sociallogin', login, (req, res) => {
@@ -33,13 +33,14 @@ module.exports = (serverApp, passport) => {
 
   // process the signup form
   serverApp.post('/signup', passport.authenticate('local-signup', {
-    successRedirect : '/user',    //if succeed, redirect to profile page
+    successRedirect : '/initChoose',    //if succeed, redirect to profile page
     failureRedirect : '/signup',    //if not, redirect to signup page
     failureFlash : true
   }));
 
   // Logout page 
   serverApp.get('/logout', (req, res) => {
+    neo_session.close();
     req.logout();
     res.redirect('/');
   });
@@ -49,9 +50,14 @@ module.exports = (serverApp, passport) => {
 
   // Google Social Login callback
   serverApp.get('/auth/google/callback', passport.authenticate('google', {
-    successRedirect : '/user',
     failureRedirect : '/sociallogin'
-  }));
+  }), (req, res) => {
+    if(pass.check === true) {
+      res.redirect('/')
+    } else {
+      res.redirect('/initChoose');
+    }
+  });
 
   //Show Visualization graph of relationship between User and Movie nodes
   serverApp.get('/visualization', /* isLoggedIn, */ (req, res) => {
